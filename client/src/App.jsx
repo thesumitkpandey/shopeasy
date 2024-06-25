@@ -1,3 +1,15 @@
+//START WITH EIDTING THE PRODUCTS LIST AND VIDEO LIST PRODUCTS SKIP REACT ROUTER IMPLEMENTATION
+import Footer from "./features/footer/Footer";
+import Navbar from "./features/navbar/Navbar";
+import { Outlet } from "react-router-dom";
 export default function App() {
-  return <h2 className="bg-red-800 text-green-900">Helleodj</h2>;
+  return (
+    <>
+      <Navbar />
+      <main>
+        <Outlet />
+      </main>
+      <Footer />
+    </>
+  );
 }
