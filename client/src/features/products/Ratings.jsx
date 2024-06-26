@@ -18,6 +18,7 @@ export default function Ratings({ rating }) {
       <span>
         {rating >= 5 ? <FaStar /> : rating >= 4.5 ? <FaStarHalf /> : <CiStar />}
       </span>
+      <span>{rating}</span>
     </>
   );
 }

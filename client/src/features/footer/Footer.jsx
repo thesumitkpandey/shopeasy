@@ -29,7 +29,6 @@ export default function Footer() {
             </a>
           </div>
 
-          {/* Footer Links */}
           <div className="flex flex-col space-y-2 mb-4 md:mb-0">
             <a
               href="/about"
@@ -51,7 +50,6 @@ export default function Footer() {
             </a>
           </div>
 
-          {/* Contact Information */}
           <div className="text-gray-600">
             <p>Email: contact@shopeasy.com</p>
             <p>Phone: +123 456 7890</p>

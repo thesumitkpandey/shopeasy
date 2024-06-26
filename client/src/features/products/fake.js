@@ -2,12 +2,12 @@
 export default [
   {
     id: 1,
-    name: "Wireless Bluetooth Headphones",
+    name: "Campus Party Shoes",
     price: 99.99,
     image:
       "https://rukminim2.flixcart.com/image/832/832/ktizdzk0/shoe/y/b/x/7-ws-9310-tying-grey-original-imag6ut3hzm2zyqm.jpeg?q=70&crop=true",
     description:
-      "High-quality wireless Bluetooth headphones with noise cancellation and long battery life.",
+      "High quality shoes whic can be used for multipurpose, one of the use is that you can use it with any color combination.",
     ratings: 1.5,
     reviews: 120,
     category: "Electronics",
