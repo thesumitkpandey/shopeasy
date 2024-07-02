@@ -1,3 +1,5 @@
+//NAVBAR ACTIVE STATUS AND SMALL CHANGES REQUIRED IN ROUTER
+
 import TopNav from "./TopNav";
 import BottomNav from "./BottomNav";
 import { useState } from "react";

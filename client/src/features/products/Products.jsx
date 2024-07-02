@@ -1,8 +1,17 @@
-import React from "react";
-import products from "./fake";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import Ratings from "./Ratings";
 export default function ProductList() {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    async function getAllProducts() {
+      const { data } = await axios.get("/api/products");
+
+      setProducts(data);
+    }
+    getAllProducts();
+  }, []);
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-center mb-8">Product Listing</h1>

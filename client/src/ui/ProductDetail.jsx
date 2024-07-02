@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Ratings from "../features/products/Ratings";
 import { useParams } from "react-router-dom";
-import fake from "../features/products/fake";
-
+import axios from "axios";
 export default function ProductDetail() {
+  const [product, setProduct] = useState({});
   const { id } = useParams();
-  const product = fake.find((el) => el.id == id);
+  useEffect(() => {
+    async function fetchSingleProduct() {
+      const { data } = await axios.get(`/api/products/${id}`);
+      setProduct(data);
+    }
+    fetchSingleProduct();
+  }, [id]);
   return (
     <div className="max-w-7xl mx-auto p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
