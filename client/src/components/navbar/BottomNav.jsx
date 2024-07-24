@@ -16,7 +16,7 @@ export default function BottomNav({ navbarOpen, setNavbarOpen }) {
       />
       <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8 items-center">
         {categories.map((el) => (
-          <BottomNavItem name={el} key={el} />
+          <BottomNavItem name={el} key={el} setNavbarOpen={setNavbarOpen} />
         ))}
       </div>
     </div>

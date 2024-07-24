@@ -17,7 +17,7 @@ export default function ProductList() {
       <h1 className="text-3xl font-bold text-center mb-8">Product Listing</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {products.map((product) => (
-          <Link to={`/product/${product.id}`} key={product.id}>
+          <Link to={`/products/${product._id}`} key={product._id}>
             <div className="border rounded-lg overflow-hidden  hover:shadow-2xl transition-shadow duration-300">
               <img
                 src={product.image}

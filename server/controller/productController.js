@@ -1,16 +1,19 @@
 import asyncHandler from "../middleware/asyncHandler.js";
-import CustomError from "../middleware/errorMiddleware.js";
+import CustomError from "../middleware/CustomError.js";
 import products from "../model/productModel.js";
 const getProducts = asyncHandler(async (req, res, next) => {
   const allProducts = await products.find({});
+  if (!allProducts) {
+    return next(new CustomError("Please try again later", 404));
+  }
   res.status(200).json(allProducts);
 });
 const getProductsById = asyncHandler(async (req, res, next) => {
-  const products = await products.findById(req.params.id);
-  if (products) {
-    res.status(200).json(products);
+  const product = await products.findById(req.params.id);
+  if (product) {
+    res.status(200).json(product);
   } else {
-    return next(new CustomError(404, "Product with this id not found"));
+    return next(new CustomError("Product with this id does not exist", 404));
   }
 });
 export { getProducts, getProductsById };
