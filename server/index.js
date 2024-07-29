@@ -7,7 +7,8 @@ import errorMiddleware from "./middleware/errorMiddleware.js";
 const app = express();
 
 connectDB();
-
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 //Routes
 app.use("/api/products", productRoute);
 app.use("/api/users", userRoute);

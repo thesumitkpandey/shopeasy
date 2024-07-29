@@ -30,7 +30,10 @@ export default function ProductDetail() {
     fetchSingleProduct();
   }, [id]);
 
-  function addToCart() {}
+  function addCart() {
+    dispatch(addToCart({ product, quantity }));
+    navigate("/cart");
+  }
 
   if (isLoading) {
     return <Loading />;
@@ -96,7 +99,8 @@ export default function ProductDetail() {
               <button
                 id="test"
                 className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-600 transition duration-300 mr-2"
-                onClick={addToCart}
+                onClick={addCart}
+                disabled={product.inStock === 0 ? true : false}
               >
                 Add to Cart
               </button>

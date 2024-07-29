@@ -2,8 +2,10 @@
 import logo from "../../assets/logo.jpg";
 import { FaUserCircle, FaSearch, FaShoppingCart } from "react-icons/fa";
 import { TiThMenuOutline } from "react-icons/ti";
-
+import { useSelector } from "react-redux";
 export default function TopNav({ setNavbarOpen, navbarOpen }) {
+  const { cartItems } = useSelector((state) => state.cart);
+
   return (
     <div className="flex justify-between items-center md:px-16 px-2 h-16">
       <TiThMenuOutline
@@ -29,7 +31,14 @@ export default function TopNav({ setNavbarOpen, navbarOpen }) {
         </button>
       </form>
       <div className="flex items-center space-x-4">
-        <FaShoppingCart className="text-[rgb(25,186,146)] text-4xl cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110" />
+        <div className="relative">
+          <FaShoppingCart className="text-[rgb(25,186,146)] text-4xl cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110" />
+          {cartItems.length > 0 && (
+            <span className="absolute -top-2 -right-2 bg-blue-700 text-white text-xs font-bold px-2 py-1 rounded-full">
+              {cartItems.length}
+            </span>
+          )}
+        </div>
         <FaUserCircle className="text-[rgb(25,186,146)] text-4xl cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110" />
       </div>
     </div>
