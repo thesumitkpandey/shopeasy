@@ -3,8 +3,8 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      colors: {
-        customGreen: "rgb(25,186,146)",
+      backgroundImage: {
+        "sign-in-bg": "url('/src/assets/signInBg.jpg')",
       },
     },
   },

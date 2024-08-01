@@ -1,8 +1,10 @@
 //NO NEED TO EVEN TOUCH THE DESIGN JUST TOUCH THE LOGIC AND LINKS
-import logo from "../../assets/logo.jpg";
-import { FaUserCircle, FaSearch, FaShoppingCart } from "react-icons/fa";
+import logo from "../../assets/logo.svg";
+import { FaUser, FaSearch, FaShoppingCart } from "react-icons/fa";
 import { TiThMenuOutline } from "react-icons/ti";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
 export default function TopNav({ setNavbarOpen, navbarOpen }) {
   const { cartItems } = useSelector((state) => state.cart);
 
@@ -17,7 +19,7 @@ export default function TopNav({ setNavbarOpen, navbarOpen }) {
         className="h-10 cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
         alt="ShopEasy Logo"
       />
-      <form className="flex items-center w-full max-w-lg mx-4 border-2 border-transparent bg-[rgb(25,186,146)] rounded-lg overflow-hidden transition duration-200 ease-in-out hover:scale-105 h-10">
+      <form className="flex items-center w-full max-w-lg mx-4 border-2 border-transparent bg-yellow-400 rounded-lg overflow-hidden transition duration-200 ease-in-out hover:scale-105 h-10">
         <input
           type="text"
           placeholder="Search here"
@@ -32,14 +34,18 @@ export default function TopNav({ setNavbarOpen, navbarOpen }) {
       </form>
       <div className="flex items-center space-x-4">
         <div className="relative">
-          <FaShoppingCart className="text-[rgb(25,186,146)] text-4xl cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110" />
-          {cartItems.length > 0 && (
-            <span className="absolute -top-2 -right-2 bg-blue-700 text-white text-xs font-bold px-2 py-1 rounded-full">
-              {cartItems.length}
-            </span>
-          )}
+          <Link to="/cart">
+            <FaShoppingCart className="text-yellow-400 text-4xl cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110" />
+            {cartItems.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-blue-900 text-white text-xs font-bold px-2 py-1 rounded-full">
+                {cartItems.length}
+              </span>
+            )}
+          </Link>
         </div>
-        <FaUserCircle className="text-[rgb(25,186,146)] text-4xl cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110" />
+        <Link to="signin">
+          <FaUser className="text-yellow-400  text-4xl cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110" />
+        </Link>
       </div>
     </div>
   );

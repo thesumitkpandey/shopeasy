@@ -28,11 +28,11 @@ export default function ProductList() {
                 <h2 className="text-xl font-semibold mb-2">{product.name}</h2>
                 <p className="text-gray-700 mb-4">{product.description}</p>
                 <div className="flex justify-between items-center mb-4">
-                  <span className="text-green-600 font-bold">
+                  <span className="bg-green-500 font-bold">
                     ${product.price}
                   </span>
                   <span className="text-yellow-500 flex">
-                    <span className="mx-2 text-l">{`${product.reviews} Reviews`}</span>
+                    <span className="mx-2 text-l">{`${product.reviewCounts} Reviews`}</span>
                     <Ratings rating={product.ratings} />
                   </span>
                 </div>

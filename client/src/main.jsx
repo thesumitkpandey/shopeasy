@@ -14,6 +14,7 @@ import {
 import Home from "./pages/Home.jsx";
 import ProductDetail from "./pages/ProductDetail.jsx";
 import Category from "./pages/Category.jsx";
+import Signin from "./pages/Signin.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
       <Route path="/products/:id" element={<ProductDetail />} />
       <Route path="/:category" element={<Category />} />
       <Route path="/cart" element={<Cart />} />
+      <Route path="/signin" element={<Signin />} />
     </Route>
   )
 );

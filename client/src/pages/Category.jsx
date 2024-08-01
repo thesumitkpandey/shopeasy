@@ -4,5 +4,5 @@ import PopUp from "../components/popup/PopUp";
 export default function Category() {
   const { category } = useParams();
 
-  return <PopUp message="Hello wolrd" status="success" />;
+  return <>this is category page</>;
 }
