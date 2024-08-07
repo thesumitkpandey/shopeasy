@@ -38,7 +38,6 @@ const authUser = asyncHandler(async (req, res, next) => {
     sameSite: "Strict",
   });
   res.status(200).json({
-    success: true,
     id: correctUserData.id,
     name: correctUserData.name,
     email: correctUserData.email,

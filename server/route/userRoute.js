@@ -11,10 +11,11 @@ import {
 import { protect, isAdmin } from "../middleware/authMiddleware.js";
 router
   .route("/")
-  .get(authUser)
-  .post(register)
+  .post(authUser)
+
   .put(protect, updateProfile)
   .delete(protect, deleteAccount);
+router.post("/signup", register);
 router.route("/profile").get(protect, getProfile);
 router.get("/logout", logout);
 export default router;
