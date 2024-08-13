@@ -14,7 +14,6 @@ export default function ProductList() {
   }, []);
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center mb-8">Product Listing</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {products.map((product) => (
           <Link to={`/products/${product._id}`} key={product._id}>
@@ -22,14 +21,14 @@ export default function ProductList() {
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-48 object-cover"
+                className="w-full h-48 object-contain"
               />
               <div className="p-4">
                 <h2 className="text-xl font-semibold mb-2">{product.name}</h2>
-                <p className="text-gray-700 mb-4">{product.description}</p>
+
                 <div className="flex justify-between items-center mb-4">
-                  <span className="bg-green-500 font-bold">
-                    ${product.price}
+                  <span className="text-myYellow font-bold text-2xl">
+                    ₹{product.price}
                   </span>
                   <span className="text-yellow-500 flex">
                     <span className="mx-2 text-l">{`${product.reviewCounts} Reviews`}</span>

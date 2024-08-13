@@ -15,6 +15,11 @@ import Home from "./pages/Home.jsx";
 import ProductDetail from "./pages/ProductDetail.jsx";
 import Category from "./pages/Category.jsx";
 import Signin from "./pages/Signin.jsx";
+import SignUp from "./pages/SingUp.jsx";
+import Shipping from "./pages/Shipping.jsx";
+import { PrivateRoute } from "./components/private/PrivateRoute.jsx";
+import Payment from "./pages/Payment.jsx";
+import ConfirmOrder from "./pages/ConfirmOrder.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -23,6 +28,12 @@ const router = createBrowserRouter(
       <Route path="/:category" element={<Category />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/signin" element={<Signin />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/" element={<PrivateRoute />}>
+        <Route path="/shipping" element={<Shipping />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/confirmorder" element={<ConfirmOrder />} />
+      </Route>
     </Route>
   )
 );

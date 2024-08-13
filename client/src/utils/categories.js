@@ -1,10 +1,9 @@
 const categories = [
-  "Fashion",
+  "Men",
+  "Women",
+  "Kids",
   "Electronics",
-  "Decoration",
-  "Beauty",
   "Furniture",
-  "Books",
-  "Fitness",
+  "Grocery",
 ];
 export default categories;

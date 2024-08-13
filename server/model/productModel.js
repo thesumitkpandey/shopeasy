@@ -21,11 +21,6 @@ const reveiwSchema = new mongoose.Schema({
 });
 const productSchema = new mongoose.Schema(
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "users",
-    },
     name: {
       type: String,
       required: true,
@@ -41,6 +36,7 @@ const productSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
+      enum: ["Men", "Women", "Kids", "Electronics", "Furniture", "Grocery"],
     },
     description: {
       type: String,

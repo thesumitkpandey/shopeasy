@@ -56,15 +56,15 @@ export default function ProductDetail() {
             <div>
               <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
               <p className="text-2xl font-semibold text-gray-800 mb-4">
-                ${product.price}
+                ₹{product.price}
               </p>
               <p className="text-gray-700 mb-4">{product.description}</p>
               <div className="flex items-center mb-4">
-                <div className="text-yellow-500 flex">
+                <div className="text-myYellow flex">
                   <Ratings rating={product.ratings} />
                 </div>
                 <span className="ml-2 text-gray-600">
-                  ({product.reviews} reviews)
+                  ({product.reviewCounts} reviews)
                 </span>
               </div>
               <div className="mb-4">
@@ -98,7 +98,7 @@ export default function ProductDetail() {
               </div>
               <button
                 id="test"
-                className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-600 transition duration-300 mr-2"
+                className="bg-myYellow text-white px-6 py-3 rounded-lg shadow-md hover:bg-yellow-500 transition duration-300 mr-2"
                 onClick={addCart}
                 disabled={product.inStock === 0 ? true : false}
               >

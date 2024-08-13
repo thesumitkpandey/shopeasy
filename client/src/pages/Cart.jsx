@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FaTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   increaseItemQuantity,
   decreaseItemQuantity,
@@ -12,7 +13,15 @@ import {
 export default function Cart() {
   const { cartItems, cartPrice } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.auth);
+  function checkoutProceed() {
+    if (userInfo) {
+      navigate("/shipping");
+    } else {
+      navigate("/signin?redirect=cart");
+    }
+  }
   return (
     <div className="max-w-7xl mx-auto p-6">
       <h1 className="text-4xl font-bold mb-8">Your Cart</h1>
@@ -21,9 +30,9 @@ export default function Cart() {
           <h2 className="text-2xl mb-4">Your cart is empty</h2>
           <Link
             to="/"
-            className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-600 transition duration-300"
+            className="bg-myYellow text-white px-6 py-3 rounded-lg shadow-md hover:bg-yellow-500 transition duration-300"
           >
-            Go Shopping
+            Let's Shop
           </Link>
         </div>
       ) : (
@@ -41,7 +50,7 @@ export default function Cart() {
                 />
                 <div className="flex-1 ml-4">
                   <h2 className="text-xl font-semibold">{item.name}</h2>
-                  <p className="text-gray-600">${item.price}</p>
+                  <p className="text-gray-600">₹{item.price}</p>
                   <div className="flex items-center mt-2">
                     <button
                       className="px-3 py-1 bg-gray-200 rounded-l-lg"
@@ -83,7 +92,10 @@ export default function Cart() {
               <span>Total</span>
               <span>₹ {cartPrice > 0 ? Math.round(cartPrice + 40) : 0}</span>
             </div>
-            <button className="bg-green-500 text-white w-full py-3 rounded-lg shadow-md hover:bg-green-600 transition duration-300">
+            <button
+              onClick={checkoutProceed}
+              className="bg-myYellow text-white w-full py-3 rounded-lg shadow-md hover:bg-yellow-500 transition duration-300"
+            >
               Proceed to Checkout
             </button>
           </div>

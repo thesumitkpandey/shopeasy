@@ -6,6 +6,10 @@ export default {
       backgroundImage: {
         "sign-in-bg": "url('/src/assets/signInBg.jpg')",
       },
+      colors: {
+        myGray: "#949398ff",
+        myYellow: "#f4df4eff",
+      },
     },
   },
   plugins: [],

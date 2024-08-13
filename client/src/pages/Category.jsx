@@ -1,8 +1,7 @@
-import { useParams } from "react-router-dom";
-import PopUp from "../components/popup/PopUp";
+import { useLocation } from "react-router-dom";
 
 export default function Category() {
-  const { category } = useParams();
+  const { search } = useLocation();
 
   return <>this is category page</>;
 }
