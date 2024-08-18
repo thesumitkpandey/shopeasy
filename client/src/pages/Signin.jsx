@@ -41,6 +41,7 @@ export default function Signin() {
         email: userDetails.email,
         password: userDetails.password,
       });
+
       dispatch(signIn({ ...response.data }));
       navigate(redirect);
       toast.success(`Logged in as ${response.data.name}`);

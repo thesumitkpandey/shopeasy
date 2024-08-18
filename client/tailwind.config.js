@@ -5,6 +5,7 @@ export default {
     extend: {
       backgroundImage: {
         "sign-in-bg": "url('/src/assets/signInBg.jpg')",
+        "update-profile-bg": "url('/src/assets/updateProfile.jpg')",
       },
       colors: {
         myGray: "#949398ff",

@@ -5,6 +5,7 @@ import Steps from "../components/steps/Steps";
 import axios from "axios";
 import { clearCart } from "../redux/cartSlice";
 import toast from "react-hot-toast";
+
 export default function ConfirmOrder() {
   const cart = useSelector((state) => state.cart);
   const navigate = useNavigate();
@@ -20,19 +21,22 @@ export default function ConfirmOrder() {
   }, [cart, navigate]);
   async function handleConfirmOrder() {
     try {
-      let orderDetails = await axios.post("/api/orders/", {
+      const orderInfo = await axios.post("/api/orders/", {
         orderItems: cart.cartItems,
         totalPrice: cart.cartPrice,
         paymentMethod: cart.paymentMethod,
         shipping: cart.shipping,
       });
-
+      navigate(`/orders/${orderInfo.data.orderDetails._id}`);
       dispatch(clearCart());
-      navigate(`/order/${orderDetails._id}`);
     } catch (err) {
-      toast.error(err);
+      console.log(err);
+      const errorMessage =
+        err.response?.data?.message || err.message || "An error occurred";
+      toast.error(errorMessage);
     }
   }
+
   return (
     <>
       <div className="flex justify-center mb-8">

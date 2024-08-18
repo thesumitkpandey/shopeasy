@@ -42,6 +42,7 @@ const authUser = asyncHandler(async (req, res, next) => {
     name: correctUserData.name,
     email: correctUserData.email,
     role: correctUserData.role,
+    phone: correctUserData.phone,
   });
 });
 const register = asyncHandler(async (req, res, next) => {
@@ -73,30 +74,16 @@ const logout = asyncHandler((req, res, next) => {
     success: true,
   });
 });
-const getProfile = asyncHandler(async (req, res, next) => {
-  if (req.user) {
-    const correctUserData = await users
-      .findById(req.user._id)
-      .select("-password");
-    res.status(200).json({
-      success: true,
-      id: correctUserData.id,
-      name: correctUserData.name,
-      email: correctUserData.email,
-      role: correctUserData.role,
-    });
-  } else {
-    return next(new CustomError("Not found", 404));
-  }
-});
+
 const updateProfile = asyncHandler(async (req, res, next) => {
-  if (!req.body.name && !req.body.email) {
-    return next(new CustomError("Enter name or email"));
+  if (!req.body.name && !req.body.email && !req.body.phone) {
+    return next(new CustomError("Modify at least a new field"));
   }
-  let user = req.user;
-  user.name = req.body.name || user.name;
-  user.email = req.body.email || user.email;
-  await user.save();
+  const newUserDetails = await users.findByIdAndUpdate(req.loggedInUser._id, {
+    name: req.body.name || req.loggedInUser.name,
+    email: req.body.email || req.loggedInUser.email,
+    phone: req.body.phone || req.loggedInUser.phone,
+  });
   res.status(200).json({
     success: true,
   });
@@ -120,4 +107,4 @@ const deleteAccount = asyncHandler(async (req, res, next) => {
   });
 });
 
-export { authUser, logout, register, getProfile, updateProfile, deleteAccount };
+export { authUser, logout, register, updateProfile, deleteAccount };

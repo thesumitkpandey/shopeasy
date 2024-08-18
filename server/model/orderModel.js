@@ -8,7 +8,7 @@ const itemsSchema = new mongoose.Schema({
   productId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "products",
-    requried: true,
+    required: true,
   },
   price: {
     type: Number,
@@ -39,6 +39,7 @@ const orderSchema = new mongoose.Schema(
     },
     paymentStatus: {
       type: String,
+
       required: true,
       enum: ["pending", "failed", "successful"],
       default: "pending",

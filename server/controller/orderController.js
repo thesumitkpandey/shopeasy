@@ -7,10 +7,9 @@ import users from "../model/userModel.js";
 //THERE ARE MULTIPLE BUGS IN CREATE ORDER
 const createOrder = asyncHandler(async (req, res, next) => {
   const { orderItems, shipping, totalPrice, paymentMethod } = req.body;
-  if (orderItems.length < 0) {
+  if (orderItems.length === 0) {
     return next(new CustomError("Order items list is emptyy", 404));
   }
-
   const newOrder = await orders.create({
     items: orderItems.map((p) => ({
       productId: p._id,
@@ -19,7 +18,7 @@ const createOrder = asyncHandler(async (req, res, next) => {
       quantity: p.quantity,
       price: p.price,
     })),
-    userId: req.user._id,
+    userId: req.loggedInUser._id,
     paymentMethod: paymentMethod,
     totalOrderValue: totalPrice,
     address: {
@@ -42,8 +41,8 @@ const createOrder = asyncHandler(async (req, res, next) => {
 });
 
 const getMyOrder = asyncHandler(async (req, res, next) => {
-  const allUserOrders = await orders.find({ userId: users._id });
-  if (allUserOrders > 0) {
+  const allUserOrders = await orders.find({ userId: req.loggedInUser._id });
+  if (allUserOrders) {
     res.status(200).json({
       success: true,
       orders: allUserOrders,
@@ -54,7 +53,6 @@ const getMyOrder = asyncHandler(async (req, res, next) => {
 });
 const modifyOrder = asyncHandler(async (req, res, next) => {});
 
-//CONTROLLERS FOR ADMIN
 const getAllOrders = asyncHandler(async (req, res, next) => {});
 const getOrderById = asyncHandler(async (req, res, next) => {
   const targetOrder = await orders.findById(req.params.id);
@@ -65,6 +63,19 @@ const getOrderById = asyncHandler(async (req, res, next) => {
       success: true,
       orderInfo: targetOrder,
     });
+  }
+});
+const modifyPaymentStatus = asyncHandler(async (req, res, next) => {
+  const isSuccessful = await orders.findByIdAndUpdate(req.user._id, {
+    paymentStatus: "successful",
+  });
+  if (isSuccessful) {
+    res.status(200).json({
+      success: true,
+    });
+  } else {
+    await orders.findByIdAndUpdate(users._id, { paymentStatus: "failed" });
+    res.status(400).json({ success: false });
   }
 });
 export { createOrder, getAllOrders, getMyOrder, modifyOrder, getOrderById };

@@ -89,11 +89,25 @@ export default function ProductDetail() {
                   onChange={(e) => setQuantity(e.target.value)}
                   className="ml-2 p-2 border border-gray-300 rounded-md bg-white shadow-sm"
                 >
-                  {[1, 2, 3, 4, 5].map((num) => (
-                    <option key={num} value={num}>
-                      {num}
+                  {product.inStock >= 5 ? (
+                    [1, 2, 3, 4, 5].map((el) => (
+                      <option key={el} value={el}>
+                        {el}
+                      </option>
+                    ))
+                  ) : product.inStock == 0 ? (
+                    <option className="text-red-600 font-bold">
+                      Out Of Stock
                     </option>
-                  ))}
+                  ) : (
+                    [1, 2, 3, 4]
+                      .filter((el) => el <= product.inStock)
+                      .map((val) => (
+                        <option key={val} val={val}>
+                          {val}
+                        </option>
+                      ))
+                  )}
                 </select>
               </div>
               <button

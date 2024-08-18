@@ -4,7 +4,6 @@ import {
   authUser,
   logout,
   register,
-  getProfile,
   updateProfile,
   deleteAccount,
 } from "../controller/userController.js";
@@ -16,6 +15,5 @@ router
   .put(protect, updateProfile)
   .delete(protect, deleteAccount);
 router.post("/signup", register);
-router.route("/profile").get(protect, getProfile);
 router.get("/logout", logout);
 export default router;

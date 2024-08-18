@@ -63,9 +63,15 @@ export default function TopNav({ setNavbarOpen, navbarOpen }) {
           <div className="relative">
             <button
               onClick={toggleDropdown}
-              className="flex items-center text-myYellow text-2xl cursor-pointers"
+              className="flex items-center text-myGray text-2xl cursor-pointers"
             >
-              {userInfo.name}
+              {userInfo.name.split(" ")[0].length > 6
+                ? `${userInfo.name
+                    .split(" ")[0]
+                    .split("")
+                    .slice(0, 4)
+                    .join("")}..`
+                : userInfo.name.split(" ")[0]}
               <IoIosArrowDropdownCircle
                 className={`transition-transform duration-300 text-myGray ${
                   dropdownOpen ? "rotate-180" : ""
@@ -73,7 +79,7 @@ export default function TopNav({ setNavbarOpen, navbarOpen }) {
               />
             </button>
             {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2">
+              <div className="absolute right-0 mt-2 w-48 z-50 bg-white rounded-md shadow-lg py-2">
                 <Link
                   to="/profile"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-100"

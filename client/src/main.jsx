@@ -4,6 +4,7 @@ import App from "./App.jsx";
 import "./index.css";
 import { Provider } from "react-redux";
 import store from "./redux/store.js";
+
 import Cart from "./pages/Cart.jsx";
 import {
   createBrowserRouter,
@@ -20,6 +21,10 @@ import Shipping from "./pages/Shipping.jsx";
 import { PrivateRoute } from "./components/private/PrivateRoute.jsx";
 import Payment from "./pages/Payment.jsx";
 import ConfirmOrder from "./pages/ConfirmOrder.jsx";
+import OrderDescription from "./pages/OrderDescription.jsx";
+import Profile from "./pages/Profile.jsx";
+import MyOrders from "./pages/MyOrders.jsx";
+import myOrdersLoader from "./utils/myOrdersLoader.js";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -33,6 +38,9 @@ const router = createBrowserRouter(
         <Route path="/shipping" element={<Shipping />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/confirmorder" element={<ConfirmOrder />} />
+        <Route path="/orders/:id" element={<OrderDescription />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/orders" loader={myOrdersLoader} element={<MyOrders />} />
       </Route>
     </Route>
   )

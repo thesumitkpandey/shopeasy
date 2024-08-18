@@ -11,6 +11,11 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    phone: {
+      type: Number,
+      maxLength: 10,
+      minLength: 10,
+    },
     password: {
       type: String,
       required: true,
@@ -24,9 +29,6 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
       default: true,
-    },
-    address: {
-      type: String,
     },
   },
   {
