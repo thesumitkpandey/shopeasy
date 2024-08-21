@@ -7,11 +7,10 @@ import {
   updateProfile,
   deleteAccount,
 } from "../controller/userController.js";
-import { protect, isAdmin } from "../middleware/authMiddleware.js";
+import { protect, adminProtect } from "../middleware/authMiddleware.js";
 router
   .route("/")
   .post(authUser)
-
   .put(protect, updateProfile)
   .delete(protect, deleteAccount);
 router.post("/signup", register);

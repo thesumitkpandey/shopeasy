@@ -39,10 +39,14 @@ const orderSchema = new mongoose.Schema(
     },
     paymentStatus: {
       type: String,
-
       required: true,
       enum: ["pending", "failed", "successful"],
       default: "pending",
+    },
+    isDelivered: {
+      type: Boolean,
+      requiree: true,
+      default: false,
     },
     totalOrderValue: {
       type: Number,

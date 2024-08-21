@@ -1,1 +1,1 @@
-//i have to add a phone option throughout the website
+i have to implement onclick delivery cancel feature

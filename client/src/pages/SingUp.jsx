@@ -37,7 +37,7 @@ export default function SignUp() {
           password: userDetails.password,
         });
         setIsLoading(false);
-        navigate(redirect ? `/signin?redirect=${redirect}` : "signin");
+        navigate(redirect ? `/signin?redirect=${redirect}` : "/signin");
         toast.success("Sign Up successful, Please Sign In to continue");
       } catch (err) {
         toast.error(err.response.data.message || "Please try again later");

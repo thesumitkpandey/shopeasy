@@ -24,7 +24,7 @@ const authUser = asyncHandler(async (req, res, next) => {
     return next(new CustomError("Invalid password", 400));
   }
   const jwtToken = jwt.sign(
-    { id: correctUserData._id },
+    { _id: correctUserData._id },
     process.env.JWT_SECRET_KEY,
     {
       expiresIn: "15d",
@@ -37,11 +37,12 @@ const authUser = asyncHandler(async (req, res, next) => {
     maxAge: 15 * 24 * 60 * 60 * 1000,
     sameSite: "Strict",
   });
+  console.log(correctUserData);
   res.status(200).json({
     id: correctUserData.id,
     name: correctUserData.name,
     email: correctUserData.email,
-    role: correctUserData.role,
+    isAdmin: correctUserData.isAdmin,
     phone: correctUserData.phone,
   });
 });

@@ -7,7 +7,8 @@ const protect = asyncHandler(async (req, res, next) => {
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      req.loggedInUser = await users.findById(decoded.id);
+      req.loggedInUser = await users.findById(decoded._id);
+      console.log(req.loggedInUser);
       next();
     } catch (err) {
       console.log(err);
@@ -17,11 +18,23 @@ const protect = asyncHandler(async (req, res, next) => {
     return next(new CustomError("Not authorized", 401));
   }
 });
-const isAdmin = asyncHandler(async (req, res, next) => {
-  if (req.user && req.user.role == "admin") {
-    next();
+const adminProtect = asyncHandler(async (req, res, next) => {
+  const token = req.cookies.token;
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      const userDetails = await users.findById(decoded._id);
+      if (userDetails.isAdmin === true) {
+        req.adminUser = userDetails;
+      } else {
+        return next(new CustomError("Not authorized", 401));
+      }
+      next();
+    } catch (err) {
+      return next(new CustomError("Not authorized", 401));
+    }
   } else {
     return next(new CustomError("Not authorized", 401));
   }
 });
-export { protect, isAdmin };
+export { protect, adminProtect };

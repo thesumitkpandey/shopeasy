@@ -5,10 +5,10 @@ async function myOrdersLoader() {
     if (allOrders) {
       return allOrders.data.orders;
     } else {
-      return null;
+      throw new Error("Failed to fetch orders");
     }
   } catch (err) {
-    return err;
+    return err.message;
   }
 }
 export default myOrdersLoader;

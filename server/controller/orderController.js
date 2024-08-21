@@ -10,6 +10,7 @@ const createOrder = asyncHandler(async (req, res, next) => {
   if (orderItems.length === 0) {
     return next(new CustomError("Order items list is emptyy", 404));
   }
+
   const newOrder = await orders.create({
     items: orderItems.map((p) => ({
       productId: p._id,
@@ -51,9 +52,7 @@ const getMyOrder = asyncHandler(async (req, res, next) => {
     return next(new CustomError("No orders found", 404));
   }
 });
-const modifyOrder = asyncHandler(async (req, res, next) => {});
 
-const getAllOrders = asyncHandler(async (req, res, next) => {});
 const getOrderById = asyncHandler(async (req, res, next) => {
   const targetOrder = await orders.findById(req.params.id);
   if (!targetOrder) {
@@ -66,7 +65,7 @@ const getOrderById = asyncHandler(async (req, res, next) => {
   }
 });
 const modifyPaymentStatus = asyncHandler(async (req, res, next) => {
-  const isSuccessful = await orders.findByIdAndUpdate(req.user._id, {
+  const isSuccessful = await orders.findByIdAndUpdate(req.loggedInUser._id, {
     paymentStatus: "successful",
   });
   if (isSuccessful) {
@@ -78,4 +77,4 @@ const modifyPaymentStatus = asyncHandler(async (req, res, next) => {
     res.status(400).json({ success: false });
   }
 });
-export { createOrder, getAllOrders, getMyOrder, modifyOrder, getOrderById };
+export { createOrder, getMyOrder, getOrderById };

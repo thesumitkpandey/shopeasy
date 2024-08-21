@@ -68,7 +68,7 @@ export default function OrderDescription() {
                 </p>
                 <p>
                   <strong>Phone: </strong>
-                  {userInfo.phone}
+                  {userInfo.phone ? userInfo.phone : "NA"}
                 </p>
                 <p>
                   <strong>Locality:</strong>
