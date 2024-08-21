@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-const AdminOrderDetails = () => {
+export default function orders() {
   const [orders, setOrders] = useState(useLoaderData());
   async function handleDelivery(id) {
     try {
@@ -123,6 +123,4 @@ const AdminOrderDetails = () => {
       </div>
     </div>
   );
-};
-
-export default AdminOrderDetails;
+}
