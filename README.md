@@ -1,1 +1,1 @@
-i have to implement onclick delivery cancel feature
+fix the carousel component home can category category itemss

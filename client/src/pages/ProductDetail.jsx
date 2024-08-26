@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Ratings from "../components/products/Ratings";
+// import Ratings from "../components/products/Ratings";
 import { useParams, useNavigate, useLoaderData } from "react-router-dom";
 import axios from "axios";
 import Error from "../components/errors/Error";
@@ -33,7 +33,7 @@ export default function ProductDetail() {
           <p className="text-gray-700 mb-4">{product.description}</p>
           <div className="flex items-center mb-4">
             <div className="text-myYellow flex">
-              <Ratings rating={product.ratings} />
+              {/*<Ratings rating={product.ratings} />*/}
             </div>
             <span className="ml-2 text-gray-600">
               ({product.reviewCounts} reviews)

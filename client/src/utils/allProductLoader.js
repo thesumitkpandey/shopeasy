@@ -1,5 +1,5 @@
 import axios from "axios";
-async function allProducts() {
+async function allProducstLoaders() {
   try {
     const products = await axios.get("/api/admin/products");
     if (products) {
@@ -11,4 +11,4 @@ async function allProducts() {
     return err.message;
   }
 }
-export default allOrders;
+export default allProducstLoaders;

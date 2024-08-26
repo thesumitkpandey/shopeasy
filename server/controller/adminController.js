@@ -2,6 +2,7 @@ import asyncHandler from "../middleware/asyncHandler.js";
 import CustomError from "../middleware/CustomError.js";
 import customError from "../middleware/CustomError.js";
 import orders from "../model/orderModel.js";
+import products from "../model/productModel.js";
 import users from "../model/userModel.js";
 
 //ORDERS
@@ -48,5 +49,47 @@ const deleteOrder = asyncHandler(async (req, res, next) => {
 });
 
 //PRODUCTS
-const createProduct = asyncHandler(async (req, res, next) => {});
-export { getAllOrders, modifyOrder, deleteOrder, createProduct };
+const getAllProducts = asyncHandler(async (req, res, next) => {
+  const allProducts = await products.find({});
+  if (allProducts) {
+    res.status(200).json(allProducts);
+  } else {
+    return next(new customError("Failed to fetch order from database", 400));
+  }
+});
+
+//USERS
+const getAllUsers = asyncHandler(async (req, res, next) => {
+  const allUsers = await users.find({ isAdmin: false });
+  if (allUsers) {
+    res.status(200).json(allUsers);
+  } else {
+    return next(new customError("Error while fetching users", 400));
+  }
+});
+const modifyProduct = asyncHandler(async (req, res, next) => {
+  const { image, price, description, category, name, inStock, brand } =
+    req.body;
+  const updatedProduct = await products.create({
+    image,
+    price,
+    description,
+    category,
+    name,
+    inStock,
+    brand,
+  });
+  if (updatedProduct) {
+    res.status(200).json(updatedProduct);
+  } else {
+    return next(new customError("Failed to update the product", 400));
+  }
+});
+export {
+  getAllOrders,
+  modifyProduct,
+  deleteOrder,
+  getAllProducts,
+  getAllUsers,
+  modifyOrder,
+};

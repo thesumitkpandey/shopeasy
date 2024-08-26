@@ -4,11 +4,16 @@ import { Outlet } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { useNavigation } from "react-router-dom";
 import Loading from "./components/errors/Loading";
+import { useSelector } from "react-redux";
+import AdminSidebar from "./components/admin/AdminSidebar";
 export default function App() {
   const navigation = useNavigation();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
   return (
     <>
-      <Navbar />
+      {userInfo ? userInfo.isAdmin ? <AdminSidebar /> : <Navbar /> : <Navbar />}
       {navigation.state == "loading" ? (
         <Loading />
       ) : (
@@ -16,7 +21,7 @@ export default function App() {
           <Outlet />
         </main>
       )}
-      <Footer />
+      {userInfo ? userInfo.isAdmin ? <></> : <Footer /> : <Footer />}
       <div>
         <Toaster />
       </div>

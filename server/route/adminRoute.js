@@ -1,7 +1,9 @@
 import {
-  createProduct,
+  getAllProducts,
   deleteOrder,
   getAllOrders,
+  modifyProduct,
+  getAllUsers,
   modifyOrder,
 } from "../controller/adminController.js";
 import { adminProtect } from "../middleware/authMiddleware.js";
@@ -16,5 +18,9 @@ router
   .delete(deleteOrder);
 
 //PRODUCTS MANIPULATION
-router.route("/products", adminProtect).post(createProduct);
+router.route("/products", adminProtect).get(getAllProducts);
+router.route("/products/:id", adminProtect).put(modifyProduct);
+
+//USERS MANIPULATION
+router.route("/users", adminProtect).get(getAllUsers);
 export default router;

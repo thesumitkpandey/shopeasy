@@ -25,15 +25,23 @@ import Error from "./components/errors/Error.jsx";
 import productDetailLoader from "./utils/productDetailsLoader.js";
 import allOrdersLoader from "./utils/allOrdersLoader.js";
 import Products from "./pages/admin/Products.jsx";
+import Users from "./pages/admin/Users.jsx";
+import allUsersLoader from "./utils/allUsersLoader.js";
+import allProducstLoaders from "./utils/allProductLoader.js";
+import ModifyProduct from "./pages/admin/ModifyProduct.jsx";
+
+import Dashboard from "./pages/admin/Dashboard.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+
     children: [
       {
         index: true,
         element: <Home />,
+        loader: allProducstLoaders,
       },
       {
         path: "products/:id",
@@ -93,15 +101,31 @@ const router = createBrowserRouter([
         element: <AdminPrivateRoute />,
         children: [
           {
-            path: "admin/orders",
+            path: "/",
+            element: <Dashboard />,
+            errorElement: <Error />,
+          },
+          {
+            path: "admin-orders",
             element: <Orders />,
             loader: allOrdersLoader,
             errorElement: <Error />,
           },
           {
-            path: "admin/products",
+            path: "admin-products",
             element: <Products />,
-            loader: "",
+            loader: allProducstLoaders,
+          },
+          {
+            path: "admin-users",
+            element: <Users />,
+            loader: allUsersLoader,
+            errorElement: <Error />,
+          },
+          {
+            path: "admin-products/:id",
+            element: <ModifyProduct />,
+            loader: productDetailLoader,
           },
         ],
       },

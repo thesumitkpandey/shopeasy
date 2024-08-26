@@ -5,7 +5,7 @@ const reveiwSchema = new mongoose.Schema({
     required: true,
     ref: "users",
   },
-  rating: {
+  points: {
     type: Number,
     required: true,
     default: true,
