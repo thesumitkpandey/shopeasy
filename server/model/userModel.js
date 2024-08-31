@@ -44,6 +44,7 @@ userSchema.pre("save", async function (next) {
   }
 });
 userSchema.pre(/^find/, function (next) {
+  console.log(this);
   this.find({ active: true });
   next();
 });

@@ -12,6 +12,7 @@ export default function TopNav({ setNavbarOpen, navbarOpen }) {
   const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -21,6 +22,10 @@ export default function TopNav({ setNavbarOpen, navbarOpen }) {
   function signOutController() {
     dispatch(signOut());
     navigate("/");
+  }
+  function handleSearchSubmit(e) {
+    e.preventDefault();
+    navigate(`/search?query=${searchQuery}`);
   }
   return (
     <div className="flex justify-between items-center md:px-16 px-2 h-16">
@@ -35,9 +40,14 @@ export default function TopNav({ setNavbarOpen, navbarOpen }) {
           alt="ShopEasy Logo"
         />
       </Link>
-      <form className="flex items-center w-full max-w-lg mx-4 border-2 border-transparent bg-myYellow blue-500 rounded-lg overflow-hidden transition duration-200 ease-in-out hover:scale-105 h-10">
+      <form
+        onSubmit={handleSearchSubmit}
+        className="flex items-center w-full max-w-lg mx-4 border-2 border-transparent bg-myYellow blue-500 rounded-lg overflow-hidden transition duration-200 ease-in-out hover:scale-105 h-10"
+      >
         <input
           type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search here"
           className="flex-grow px-4 py-2 text-gray-700 focus:outline-none h-full"
         />

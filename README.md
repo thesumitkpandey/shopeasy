@@ -1,1 +1,1 @@
-fix the carousel component home can category category itemss
+setting navigation for paginatin

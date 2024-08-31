@@ -1,78 +1,56 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Legend,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import React from "react";
+import { PieChart, Pie, Tooltip, Cell } from "recharts";
+const pieChartData = [
+  { name: "Men", value: 0 },
+  { name: "Women", value: 0 },
+  { name: "Kids", value: 0 },
+  { name: "Electronics", value: 0 },
+  { name: "Furniture", value: 0 },
+  { name: "Grocery", value: 0 },
+];
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#D6D6D6",
+  "#8D8D8D",
+];
 
-export default function PieChartComponent() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [categoryData, setCategoryData] = useState([]);
+export default function PieChartComponent({ products }) {
+  const counts = pieChartData.reduce((acc, category) => {
+    acc[category.name] = 0;
+    return acc;
+  }, {});
 
-  useEffect(() => {
-    async function fetchCategoryData() {
-      setIsLoading(true);
-      try {
-        const response = await axios.get("/api/admin/products");
-        const products = response.data;
-        const categoryTotals = {};
-        products.forEach((product) => {
-          const { category } = product;
-          if (categoryTotals[category]) {
-            categoryTotals[category] += 1;
-          } else {
-            categoryTotals[category] = 1;
-          }
-        });
-        const formattedData = Object.keys(categoryTotals).map((category) => ({
-          name: category,
-          value: categoryTotals[category],
-        }));
-
-        setCategoryData(formattedData);
-      } catch (error) {
-        console.error("Error fetching category data:", error);
-      } finally {
-        setIsLoading(false);
-      }
+  products.forEach((product) => {
+    if (counts.hasOwnProperty(product.category)) {
+      counts[product.category]++;
     }
-
-    fetchCategoryData();
-  }, []);
+  });
+  const updatedPieChartData = pieChartData.map((category) => ({
+    ...category,
+    value: counts[category.name] || 0,
+  }));
 
   return (
-    <div className="p-4">
-      {isLoading ? (
-        <h1>Loading...</h1>
-      ) : (
-        <ResponsiveContainer width="100%" height={300}>
-          <PieChart>
-            <Pie
-              data={categoryData}
-              dataKey="value"
-              nameKey="name"
-              outerRadius={120}
-              fill="#8884d8"
-              label
-            >
-              {categoryData.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
-      )}
-    </div>
+    <PieChart width={400} height={400}>
+      <Pie
+        data={updatedPieChartData}
+        dataKey="value"
+        nameKey="name"
+        cx="50%"
+        cy="50%"
+        outerRadius={150}
+        fill="#8884d8"
+        label
+      >
+        {updatedPieChartData.map((entry, index) => (
+          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+        ))}
+      </Pie>
+      <Tooltip />
+    </PieChart>
   );
 }

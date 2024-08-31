@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux";
 import Dashboard from "./admin/Dashboard";
 import CarouselComponent from "../components/products/CarouselComponent";
-import Products from "../components/products/Products";
 import CategoryBanner from "../components/products/CategoryBanner";
-import categories from "../utils/categories";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useParams } from "react-router-dom";
+import { newCategories } from "../utils/categories";
+
 const carouselItems = [
   {
     image:
@@ -44,13 +44,14 @@ export default function Home() {
       ) : (
         <>
           <CarouselComponent carouselContent={carouselItems} />
-          {categories.map((c) => (
-            <CategoryBanner
-              category={c}
-              key={c}
-              products={products.filter((p) => p.category == c).splice(0, 4)}
-            />
-          ))}
+          {products &&
+            newCategories.map((category) => (
+              <CategoryBanner
+                category={category.name}
+                key={category.name}
+                products={products}
+              />
+            ))}
         </>
       )}
     </div>

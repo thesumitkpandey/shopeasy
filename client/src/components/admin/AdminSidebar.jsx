@@ -41,11 +41,6 @@ export default function AdminSidebar() {
           icon={<FaUser size={28} />}
           to="/admin-users"
         />
-        <SidebarItems
-          name="Reviews"
-          icon={<MdRateReview size={28} />}
-          to="/admin-reviews"
-        />
       </nav>
 
       <div className="absolute bottom-4 left-0 w-full px-4">

@@ -34,9 +34,7 @@ export default function Users() {
 
   async function handleToggleActive(id) {
     try {
-      const updatedUser = await axios.put(
-        `/api/admin/users/${id}/toggle-active`
-      );
+      const updatedUser = await axios.put(`/api/admin/users`, { _id: id });
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           user._id === id

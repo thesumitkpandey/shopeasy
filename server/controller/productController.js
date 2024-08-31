@@ -18,31 +18,52 @@ const getProductsById = asyncHandler(async (req, res, next) => {
 });
 const addProductReview = asyncHandler(async (req, res, next) => {
   const { rating, comment } = req.body;
+
+  if (!rating || !comment) {
+    return next(
+      new CustomError("Review must contain a rating and comment", 400)
+    );
+  }
+
   const productInfo = await products.findById(req.params.id);
-  const alreadyReviewed = productInfo.reveiws.filter(
-    (reviewElement) => reviewElement.users == req.loggedInUser._id
+
+  if (!productInfo) {
+    return next(new CustomError("Product not found", 404));
+  }
+
+  const alreadyReviewed = productInfo.reviews.find(
+    (reviewElement) =>
+      reviewElement.users.toString() === req.loggedInUser._id.toString()
   );
-  if (alreadyReviewed > 0) {
+
+  if (alreadyReviewed) {
     return next(new CustomError("Product already reviewed by the user", 401));
   }
-  const review = {
+
+  const newReview = {
     name: req.loggedInUser.name,
     comment,
-    points: Number(rating),
+    rating: Number(rating),
     users: req.loggedInUser._id,
   };
-  products.reviews.push(review);
-  products.ratings = products.ratings.reduce(
-    (acc, cur) =>
-      (productInfo.ratings * reviewCounts + rating) / (reviewCounts + 1),
-    productInfo.ratings || 0
+
+  productInfo.reviews.push(newReview);
+
+  productInfo.reviewCounts = productInfo.reviews.length;
+
+  const totalRatings = productInfo.reviews.reduce(
+    (acc, cur) => acc + cur.rating,
+    0
   );
-  products.reviewCounts += 1;
-  const newProductInfo = await products.save();
+  productInfo.ratings = totalRatings / productInfo.reviewCounts;
+
+  const newProductInfo = await productInfo.save();
+
   if (newProductInfo) {
-    req.status(200).json(newProductInfo);
+    res.status(201).json(newProductInfo);
   } else {
     return next(new CustomError("Failed to create review", 400));
   }
 });
+
 export { getProducts, getProductsById, addProductReview };

@@ -31,17 +31,18 @@ import allProducstLoaders from "./utils/allProductLoader.js";
 import ModifyProduct from "./pages/admin/ModifyProduct.jsx";
 
 import Dashboard from "./pages/admin/Dashboard.jsx";
+import allProducstLoadersForUsers from "./utils/allProducstLoadersForUsers.js";
+import SearchBox from "./pages/SearchBox.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-
     children: [
       {
         index: true,
         element: <Home />,
-        loader: allProducstLoaders,
+        loader: allProducstLoadersForUsers,
       },
       {
         path: "products/:id",
@@ -51,6 +52,12 @@ const router = createBrowserRouter([
       {
         path: ":category",
         element: <Category />,
+        loader: allProducstLoadersForUsers,
+      },
+      {
+        path: "search",
+        element: <SearchBox />,
+        loader: allProducstLoadersForUsers,
       },
       {
         path: "cart",

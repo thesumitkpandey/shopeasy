@@ -5,32 +5,62 @@ import { useLoaderData, useParams, useNavigate } from "react-router-dom";
 
 export default function ModifyProduct() {
   const [product, setProduct] = useState(useLoaderData());
+  const [newProduct, setNewProduct] = useState({
+    name: product.name || "",
+    brand: product.brand || "",
+    price: product.price || "",
+    inStock: product.inStock || "",
+    category: product.category || "",
+    description: product.description || "",
+    image: product.image || "",
+  });
+
   const navigate = useNavigate();
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProduct((prevProduct) => ({ ...prevProduct, [name]: value }));
+    setNewProduct((prevProduct) => ({
+      ...prevProduct,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  async function handleSubmit(e) {
+  async function handleUpdateSubmit(e) {
     e.preventDefault();
     try {
       const updatedProductDetails = await axios.put(
         `/api/admin/products/${product._id}`,
-        product
+        newProduct
+      );
+      navigate("/admin-products");
+      toast.success(`Product ${product._id} updated successfully`);
+    } catch (err) {
+      toast.error("Failed to update product");
+    }
+  }
+  async function handleCreateSubmit(e) {
+    e.preventDefault();
+    try {
+      const createProductStatus = await axios.post(
+        `/api/admin/products`,
+        newProduct
       );
 
-      navigate("/admin-products");
-      toast.success(`Product ${product.id} updated successfully`);
+      if (createProductStatus) {
+        toast.success(`Product created successfully`);
+      }
     } catch (err) {
       toast.error("Failed to update product");
       console.error(err);
     }
   }
-
   return (
     <div className="ml-72 p-6">
       <h1 className="text-3xl font-bold mb-6">Modify Product</h1>
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form
+        onSubmit={
+          Object.keys(product).length ? handleUpdateSubmit : handleCreateSubmit
+        }
+        className="space-y-6"
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-lg font-medium text-gray-700 mb-2">
@@ -39,7 +69,7 @@ export default function ModifyProduct() {
             <input
               type="text"
               name="name"
-              value={product.name}
+              value={newProduct.name}
               onChange={handleChange}
               className="w-full p-3 border rounded-lg"
               placeholder="Enter product name"
@@ -54,7 +84,7 @@ export default function ModifyProduct() {
             <input
               type="text"
               name="brand"
-              value={product.brand}
+              value={newProduct.brand}
               onChange={handleChange}
               className="w-full p-3 border rounded-lg"
               placeholder="Enter brand name"
@@ -69,7 +99,7 @@ export default function ModifyProduct() {
             <input
               type="number"
               name="price"
-              value={product.price}
+              value={newProduct.price}
               onChange={handleChange}
               className="w-full p-3 border rounded-lg"
               placeholder="Enter price"
@@ -83,8 +113,8 @@ export default function ModifyProduct() {
             </label>
             <input
               type="number"
-              name="stocks"
-              value={product.inStock}
+              name="inStock"
+              value={newProduct.inStock}
               onChange={handleChange}
               className="w-full p-3 border rounded-lg"
               placeholder="Enter stock quantity"
@@ -98,7 +128,7 @@ export default function ModifyProduct() {
             </label>
             <select
               name="category"
-              value={product.category}
+              value={newProduct.category}
               onChange={handleChange}
               className="w-full p-3 border rounded-lg"
               required
@@ -121,7 +151,7 @@ export default function ModifyProduct() {
             </label>
             <textarea
               name="description"
-              value={product.description}
+              value={newProduct.description}
               onChange={handleChange}
               className="w-full p-3 border rounded-lg"
               placeholder="Enter product description"
@@ -136,7 +166,7 @@ export default function ModifyProduct() {
             </label>
             <input
               name="image"
-              value={product.image}
+              value={newProduct.image}
               onChange={handleChange}
               className="w-full p-3 border rounded-lg"
               placeholder="Enter product Image link"

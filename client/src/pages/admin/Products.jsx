@@ -1,20 +1,38 @@
 import React, { useState } from "react";
-import { useLoaderData, Link } from "react-router-dom";
-
+import {
+  useLoaderData,
+  Link,
+  useSearchParams,
+  useNavigate,
+} from "react-router-dom";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { MdAddBox } from "react-icons/md";
+import Pagination from "../../components/pagination/Pagination";
 export default function Products() {
   const [products, setProducts] = useState(useLoaderData());
   const [searchTerm, setSearchTerm] = useState("");
+  const [params, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [filters, setFilters] = useState({
     inStock: "",
     category: "",
     priceRange: "",
   });
 
-  const handleDelete = (productId) => {
-    setProducts(products.filter((product) => product._id !== productId));
-  };
+  async function handleDelete(productId) {
+    try {
+      const deleteStatus = await axios.delete("/api/admin/products", {
+        data: { _id: productId },
+      });
 
-  const filteredProducts = products.filter((product) => {
+      toast.success(`Product ${productId} deleted successfully`);
+    } catch (err) {
+      toast.error(err.message);
+    }
+  }
+
+  const filteredProducts = products.allProducts.filter((product) => {
     const matchesSearch =
       product._id.includes(searchTerm) ||
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -27,7 +45,7 @@ export default function Products() {
       : true;
 
     const matchesCategory = filters.category
-      ? product.category === filters.category
+      ? product.category.toLowerCase() === filters.category.toLowerCase()
       : true;
 
     const matchesPrice = (() => {
@@ -55,20 +73,32 @@ export default function Products() {
   const truncateName = (name) => {
     return name.length > 20 ? `${name.slice(0, 20)}...` : name;
   };
-
+  function onPageChange(newPageNumber) {
+    navigate(`/admin-products?page=${newPageNumber}`);
+  }
   return (
     <div className="ml-72 p-4">
-      <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+      <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
         <div className="bg-blue-500 text-white p-4 rounded-lg shadow-md">
           <h2 className="text-xl font-bold">Total Products</h2>
-          <p className="text-2xl">{products.length}</p>
+          <p className="text-2xl">{products.allProducts.length}</p>
         </div>
         <div className="bg-red-500 text-white p-4 rounded-lg shadow-md">
           <h2 className="text-xl font-bold">Out of Stock</h2>
           <p className="text-2xl">
-            {products.filter((product) => product.stocks === 0).length}
+            {
+              products.allProducts.filter((product) => product.inStock === 0)
+                .length
+            }
           </p>
         </div>
+        <Link
+          to="/admin-products/new"
+          className="bg-blue-500 flex items-center content-center flex-col text-white p-4 rounded-lg shadow-md"
+        >
+          <h2 className="text-xl font-bold">Add New Product</h2>
+          <MdAddBox className="text-4xl" />
+        </Link>
       </div>
 
       <div className="mb-6 flex flex-wrap justify-between items-center">
@@ -101,10 +131,12 @@ export default function Products() {
             className="border p-2 rounded"
           >
             <option value="">Category</option>
-            <option value="electronics">Electronics</option>
-            <option value="clothing">Clothing</option>
-            <option value="accessories">Accessories</option>
-            <option value="beauty">Beauty</option>
+            <option value="Men">Men</option>
+            <option value="Women">Women</option>
+            <option value="Kids">Kids</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Furniture">Furniture</option>
+            <option value="Grocery">Grocery</option>
           </select>
 
           <select
@@ -186,6 +218,11 @@ export default function Products() {
           </table>
         </div>
       </div>
+      <Pagination
+        currentPage={Number(params.get("page"))}
+        totalPages={products.pageSize}
+        onPageChange={onPageChange}
+      />
     </div>
   );
 }

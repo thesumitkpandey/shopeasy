@@ -1,8 +1,11 @@
-import { useLocation } from "react-router-dom";
+import { useLoaderData, useLocation } from "react-router-dom";
 import CarouselComponent from "../components/products/CarouselComponent";
 import { newCategories } from "../utils/categories";
+import CategoryBanner from "../components/products/CategoryBanner";
+import ProductList from "../components/products/Products";
 
 export default function Category() {
+  const products = useLoaderData();
   const { pathname } = useLocation();
 
   function handleCategory() {
@@ -19,23 +22,28 @@ export default function Category() {
       case "furniture":
         return newCategories.find((el) => el.name === "Furniture")
           .carouselItems;
-      case "groceries":
-        return newCategories.find((el) => el.name === "Groceries")
-          .carouselItems;
+      case "grocery":
+        return newCategories.find((el) => el.name === "Grocery").carouselItems;
       default:
         return null;
     }
   }
-
   const category = handleCategory();
-
   return (
     <>
-      {category ? (
-        <CarouselComponent carouselContent={category} />
-      ) : (
-        <div>No content available</div>
-      )}
+      <CarouselComponent carouselContent={category} />
+      <CategoryBanner
+        category={
+          pathname.substring(1).charAt(0).toUpperCase() +
+          pathname.substring(1).slice(1)
+        }
+        products={products}
+      />
+      <ProductList
+        products={products.filter(
+          (p) => p.category.toLowerCase() == pathname.substring(1)
+        )}
+      />
     </>
   );
 }

@@ -50,11 +50,87 @@ const deleteOrder = asyncHandler(async (req, res, next) => {
 
 //PRODUCTS
 const getAllProducts = asyncHandler(async (req, res, next) => {
-  const allProducts = await products.find({});
-  if (allProducts) {
-    res.status(200).json(allProducts);
+  console.log(req.query.page);
+  const pageSize = 2;
+  const pageNumber = Number(req.query.page) || 1;
+  const totalProductsCount = await products.countDocuments();
+  const allProducts = await products
+    .find({})
+    .limit(pageSize)
+    .skip(pageSize * (pageNumber - 1));
+
+  if (!allProducts) {
+    return next(new CustomError("Please try again later", 404));
+  }
+  res.status(200).json({
+    allProducts,
+    pageNumber,
+    pageSize: Math.ceil(totalProductsCount / pageSize),
+  });
+});
+const createProduct = asyncHandler(async (req, res, next) => {
+  console.log("requet received");
+  const { image, price, description, category, name, inStock, brand } =
+    req.body;
+
+  const createProductStatus = await products.create({
+    image,
+    price,
+    description,
+    category,
+    reviews: [],
+    name,
+    inStock,
+    brand,
+  });
+
+  if (createProductStatus) {
+    res.status(200).json(createProductStatus);
   } else {
-    return next(new customError("Failed to fetch order from database", 400));
+    return next(new CustomError("Failed to update the product", 400));
+  }
+});
+
+const deleteProduct = asyncHandler(async (req, res, next) => {
+  const { _id } = req.body;
+  if (!_id) {
+    return next(new customError("Product id not found"));
+  }
+  const deleteStatus = await products.findByIdAndDelete(_id);
+
+  if (deleteStatus) {
+    res.status(200).json(deleteStatus);
+  } else {
+    return next(new CustomError("Unable to delete the product", 400));
+  }
+});
+
+const modifyProduct = asyncHandler(async (req, res, next) => {
+  const { image, price, description, category, name, inStock, brand } =
+    req.body;
+
+  const updatedProductStatus = await products.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: {
+        image,
+        price,
+        description,
+        category,
+        name,
+        inStock,
+        brand,
+      },
+    },
+    { new: true, runValidators: true }
+  );
+
+  console.log(updatedProductStatus);
+
+  if (updatedProductStatus) {
+    res.status(200).json(updatedProductStatus);
+  } else {
+    return next(new CustomError("Failed to update the product", 400));
   }
 });
 
@@ -67,24 +143,16 @@ const getAllUsers = asyncHandler(async (req, res, next) => {
     return next(new customError("Error while fetching users", 400));
   }
 });
-const modifyProduct = asyncHandler(async (req, res, next) => {
-  const { image, price, description, category, name, inStock, brand } =
-    req.body;
-  const updatedProduct = await products.create({
-    image,
-    price,
-    description,
-    category,
-    name,
-    inStock,
-    brand,
-  });
-  if (updatedProduct) {
-    res.status(200).json(updatedProduct);
-  } else {
-    return next(new customError("Failed to update the product", 400));
+
+const deactivateUser = asyncHandler(async (req, res, next) => {
+  const { _id } = req.body;
+  if (!_id) {
+    return next(new customError("Id not found", 404));
   }
+  const deactivateStatus = await users.findByIdAndUpdate(_id, { active: true });
+  console.log(deactivateStatus);
 });
+
 export {
   getAllOrders,
   modifyProduct,
@@ -92,4 +160,7 @@ export {
   getAllProducts,
   getAllUsers,
   modifyOrder,
+  deleteProduct,
+  createProduct,
+  deactivateUser,
 };

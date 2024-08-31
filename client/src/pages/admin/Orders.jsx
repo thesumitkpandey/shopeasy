@@ -218,7 +218,7 @@ export default function Orders() {
                         onClick={() => handleCancellation(order._id)}
                         className="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded transition duration-150 ease-in-out"
                       >
-                        Cancel
+                        Delete
                       </button>
                     </div>
                   </td>

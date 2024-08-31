@@ -2,16 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Ratings from "./Ratings";
-export default function ProductList() {
-  const [products, setProducts] = useState([]);
-  useEffect(() => {
-    async function getAllProducts() {
-      const { data } = await axios.get("/api/products");
-
-      setProducts(data);
-    }
-    getAllProducts();
-  }, []);
+export default function ProductList({ products }) {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">

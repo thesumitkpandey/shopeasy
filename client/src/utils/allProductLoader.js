@@ -1,7 +1,11 @@
 import axios from "axios";
-async function allProducstLoaders() {
+
+async function allProducstLoaders({ request }) {
+  const url = new URL(request.url);
+  const page = url.searchParams.get("page") || 1;
+
   try {
-    const products = await axios.get("/api/admin/products");
+    const products = await axios.get(`/api/admin/products?page=${page}`);
     if (products) {
       return products.data;
     } else {
@@ -11,4 +15,5 @@ async function allProducstLoaders() {
     return err.message;
   }
 }
+
 export default allProducstLoaders;
