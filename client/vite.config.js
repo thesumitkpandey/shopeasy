@@ -10,6 +10,7 @@ export default defineConfig({
         target: "https://shopeasy-server-94rv.onrender.com/",
         changeOrigin: true,
         secure: false,
+        rewrite: (path) => path.replace(/^\/api/, '')
       },
     },
   },
