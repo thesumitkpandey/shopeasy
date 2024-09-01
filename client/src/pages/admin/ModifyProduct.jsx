@@ -40,7 +40,7 @@ export default function ModifyProduct() {
     e.preventDefault();
     try {
       const createProductStatus = await axios.post(
-        `/api/admin/products`,
+        `${process.env.SERVER}/api/admin/products`,
         newProduct
       );
 
