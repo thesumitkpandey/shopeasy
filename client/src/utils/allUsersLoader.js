@@ -1,7 +1,7 @@
 import axios from "axios";
 async function allUsersLoader() {
   try {
-    const users = await axios.get("/api/admin/users");
+    const users = await axios.get(`${process.env.VITE_SERVER}/api/admin/users`);
     if (users) {
       return users.data;
     } else {

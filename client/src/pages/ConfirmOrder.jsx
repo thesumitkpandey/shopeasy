@@ -21,12 +21,15 @@ export default function ConfirmOrder() {
   }, [cart, navigate]);
   async function handleConfirmOrder() {
     try {
-      const orderInfo = await axios.post("/api/orders/", {
-        orderItems: cart.cartItems,
-        totalPrice: cart.cartPrice,
-        paymentMethod: cart.paymentMethod,
-        shipping: cart.shipping,
-      });
+      const orderInfo = await axios.post(
+        `${process.env.VITE_SERVER}/api/orders/`,
+        {
+          orderItems: cart.cartItems,
+          totalPrice: cart.cartPrice,
+          paymentMethod: cart.paymentMethod,
+          shipping: cart.shipping,
+        }
+      );
       navigate(`/orders/${orderInfo.data.orderDetails._id}`);
       dispatch(clearCart());
     } catch (err) {

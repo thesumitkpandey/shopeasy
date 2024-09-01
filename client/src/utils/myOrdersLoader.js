@@ -1,7 +1,7 @@
 import axios from "axios";
 async function myOrdersLoader() {
   try {
-    const allOrders = await axios.get("/api/orders");
+    const allOrders = await axios.get(`${process.env.VITE_SERVER}/api/orders`);
     if (allOrders) {
       return allOrders.data.orders;
     } else {

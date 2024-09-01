@@ -15,7 +15,9 @@ export default function OrderDescription() {
     async function getOrderInfo() {
       try {
         setIsLoading(true);
-        const response = await axios.get(`/api/orders/${id}`);
+        const response = await axios.get(
+          `${process.env.VITE_SERVER}/api/orders/${id}`
+        );
         setOrderDetails(response.data.orderInfo);
         setIsLoading(false);
       } catch (err) {

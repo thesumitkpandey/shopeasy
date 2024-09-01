@@ -4,7 +4,9 @@ async function productDetailLoader({ params }) {
     return {};
   }
   try {
-    const productDetails = await axios.get(`/api/products/${params.id}`);
+    const productDetails = await axios.get(
+      `${process.env.VITE_SERVER}/api/products/${params.id}`
+    );
     if (productDetails) {
       return productDetails.data;
     } else {

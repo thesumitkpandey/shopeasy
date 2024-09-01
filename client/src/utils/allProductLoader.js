@@ -5,7 +5,9 @@ async function allProducstLoaders({ request }) {
   const page = url.searchParams.get("page") || 1;
 
   try {
-    const products = await axios.get(`/api/admin/products?page=${page}`);
+    const products = await axios.get(
+      `${process.env.VITE_SERVER}/api/admin/products?page=${page}`
+    );
     if (products) {
       return products.data;
     } else {
