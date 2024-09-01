@@ -53,7 +53,9 @@ export default function Orders() {
 
   async function handleDelivery(id) {
     try {
-      await axios.put("/api/admin/orders", { _id: id });
+      await axios.put(`${process.env.VITE_SERVER}/api/admin/orders`, {
+        _id: id,
+      });
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order._id === id ? { ...order, isDelivered: true } : order
@@ -68,7 +70,9 @@ export default function Orders() {
 
   async function handleCancellation(id) {
     try {
-      await axios.delete("/api/admin/orders", { data: { _id: id } });
+      await axios.delete(`${process.env.VITE_SERVER}/api/admin/orders`, {
+        data: { _id: id },
+      });
       setOrders((prevOrders) => prevOrders.filter((order) => order._id !== id));
       toast.success(`Order ${id} Deleted`);
     } catch (err) {

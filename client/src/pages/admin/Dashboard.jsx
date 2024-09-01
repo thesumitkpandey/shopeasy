@@ -12,7 +12,9 @@ export default function Dashboard() {
   useEffect(() => {
     async function getOrders() {
       try {
-        const { data } = await axios.get("/api/admin/orders");
+        const { data } = await axios.get(
+          `${process.env.VITE_SERVER}/api/admin/orders`
+        );
         setOrders(data);
         console.log(data);
       } catch (error) {

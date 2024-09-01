@@ -22,9 +22,12 @@ export default function Products() {
 
   async function handleDelete(productId) {
     try {
-      const deleteStatus = await axios.delete("/api/admin/products", {
-        data: { _id: productId },
-      });
+      const deleteStatus = await axios.delete(
+        `${process.env.VITE_SERVER}/api/admin/products`,
+        {
+          data: { _id: productId },
+        }
+      );
 
       toast.success(`Product ${productId} deleted successfully`);
     } catch (err) {

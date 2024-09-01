@@ -27,7 +27,7 @@ export default function ModifyProduct() {
     e.preventDefault();
     try {
       const updatedProductDetails = await axios.put(
-        `/api/admin/products/${product._id}`,
+        `${process.env.VITE_SERVER}/api/admin/products/${product._id}`,
         newProduct
       );
       navigate("/admin-products");

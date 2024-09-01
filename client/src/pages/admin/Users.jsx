@@ -34,7 +34,10 @@ export default function Users() {
 
   async function handleToggleActive(id) {
     try {
-      const updatedUser = await axios.put(`/api/admin/users`, { _id: id });
+      const updatedUser = await axios.put(
+        `${process.env.VITE_SERVER}/api/admin/users`,
+        { _id: id }
+      );
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           user._id === id
@@ -51,7 +54,7 @@ export default function Users() {
 
   async function handleDeleteUser(id) {
     try {
-      await axios.delete(`/api/admin/users/${id}`);
+      await axios.delete(`${process.env.VITE_SERVER}/api/admin/users/${id}`);
       setUsers((prevUsers) => prevUsers.filter((user) => user._id !== id));
       toast.success(`User ${id} deleted`);
     } catch (err) {
