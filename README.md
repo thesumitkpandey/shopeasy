@@ -1,1 +1,1 @@
-setting navigation for paginatin
+Project complete and deployment initialization
