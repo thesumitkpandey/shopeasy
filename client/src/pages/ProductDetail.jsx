@@ -44,7 +44,7 @@ export default function ProductDetail() {
     } else {
       try {
         const response = await axios.post(
-          `/api/products/${product._id}/reviews`,
+          `${process.env.VITE_SERVER}/api/products/${product._id}/reviews`,
           { rating: reviewForm.rating, comment: reviewForm.comment }
         );
         if (response.status === 201) {

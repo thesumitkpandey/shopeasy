@@ -29,11 +29,14 @@ export default function Profile() {
 
   async function handleSaveChanges() {
     try {
-      const updateResponse = await axios.put("/api/users", {
-        name: userDetails.name,
-        email: userDetails.email,
-        phone: userDetails.phone,
-      });
+      const updateResponse = await axios.put(
+        `${process.env.VITE_SERVER}/api/users`,
+        {
+          name: userDetails.name,
+          email: userDetails.email,
+          phone: userDetails.phone,
+        }
+      );
       dispatch(signOut());
       toast.success("User updated successfully");
     } catch (err) {

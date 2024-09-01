@@ -16,7 +16,9 @@ export default function BarGraphComponent() {
   useEffect(() => {
     async function getUsers() {
       try {
-        const { data } = await axios.get("/api/admin/users");
+        const { data } = await axios.get(
+          `${process.env.VITE_SERVER}/api/admin/users`
+        );
         setUsers(data);
       } catch (err) {
         console.error(err.message);

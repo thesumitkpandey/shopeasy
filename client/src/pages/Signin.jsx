@@ -37,10 +37,13 @@ export default function Signin() {
     e.preventDefault();
     try {
       setIsLoading(true);
-      const response = await axios.post("/api/users", {
-        email: userDetails.email,
-        password: userDetails.password,
-      });
+      const response = await axios.post(
+        `${process.env.VITE_SERVER}/api/users`,
+        {
+          email: userDetails.email,
+          password: userDetails.password,
+        }
+      );
 
       dispatch(signIn({ ...response.data }));
       navigate(redirect);
