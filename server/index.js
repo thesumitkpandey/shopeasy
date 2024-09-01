@@ -7,7 +7,16 @@ import errorMiddleware from "./middleware/errorMiddleware.js";
 import cookieParser from "cookie-parser";
 import orderRoute from "./route/orderRoute.js";
 import adminRoute from "./route/adminRoute.js";
+import cors from "cors";
 const app = express();
+const corsOptions = {
+  origin:
+    process.env.NODE_ENVIRONMENT === "development" ? "*" : process.env.CLIENT,
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+
 connectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

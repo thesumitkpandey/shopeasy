@@ -1,7 +1,7 @@
 import axios from "axios";
 async function allProducstLoadersForUsers() {
   try {
-    const products = await axios.get("/api/products");
+    const products = await axios.get(`${process.env.VITE_SERVER}/api/products`);
     if (products) {
       return products.data;
     } else {
