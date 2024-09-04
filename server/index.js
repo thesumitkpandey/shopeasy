@@ -12,6 +12,7 @@ const app = express();
 const corsOptions = {
   origin:
     process.env.NODE_ENVIRONMENT === "development" ? "*" : process.env.CLIENT,
+  credentials: true,
   optionsSuccessStatus: 200,
 };
 

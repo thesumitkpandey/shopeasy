@@ -4,31 +4,29 @@ import CarouselComponent from "../components/products/CarouselComponent";
 import CategoryBanner from "../components/products/CategoryBanner";
 import { useLoaderData, useParams } from "react-router-dom";
 import { newCategories } from "../utils/categories";
-
+import fashion from "../assets/Homepage/fashion.jpg";
+import shoes from "../assets/Homepage/shoes.jpg";
+import watch from "../assets/Homepage/watch.jpg";
+import gold from "../assets/Homepage/gold.jpg";
 const carouselItems = [
   {
-    image:
-      "https://assets.tatacliq.com/medias/sys_master/images/61699652288542.jpg",
+    image: watch,
     link: "",
   },
   {
-    image:
-      "https://assets.tatacliq.com/medias/sys_master/images/61699652288542.jpg",
+    image: shoes,
     link: "",
   },
   {
-    image:
-      "https://assets.tatacliq.com/medias/sys_master/images/61699652091934.jpg",
+    image: gold,
     link: "",
   },
   {
-    image:
-      "https://assets.tatacliq.com/medias/sys_master/images/61750973431838.jpg",
+    image: watch,
     link: "",
   },
   {
-    image:
-      "https://assets.tatacliq.com/medias/sys_master/images/61699652157470.jpg",
+    image: fashion,
     link: "",
   },
 ];

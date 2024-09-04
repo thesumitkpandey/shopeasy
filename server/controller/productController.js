@@ -18,7 +18,7 @@ const getProductsById = asyncHandler(async (req, res, next) => {
 });
 const addProductReview = asyncHandler(async (req, res, next) => {
   const { rating, comment } = req.body;
-
+  console.log("reqeust received");
   if (!rating || !comment) {
     return next(
       new CustomError("Review must contain a rating and comment", 400)

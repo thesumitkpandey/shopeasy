@@ -37,7 +37,6 @@ const authUser = asyncHandler(async (req, res, next) => {
     maxAge: 15 * 24 * 60 * 60 * 1000,
     sameSite: "Strict",
   });
-  console.log(correctUserData);
   res.status(200).json({
     id: correctUserData.id,
     name: correctUserData.name,
@@ -69,7 +68,7 @@ const logout = asyncHandler((req, res, next) => {
     httpOnly: true,
     secure: process.env.NODE_ENVIRONMENT == "development" ? false : true,
     maxAge: 15 * 24 * 60 * 60 * 1000,
-    sameSite: "Strict",
+    sameSite: "none",
   });
   res.status(200).json({
     success: true,
