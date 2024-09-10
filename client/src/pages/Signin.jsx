@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Error from "../components/errors/Error";
+import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import Loading from "../components/errors/Loading";
 import { useDispatch, useSelector } from "react-redux";
@@ -46,6 +47,10 @@ export default function Signin() {
       );
 
       dispatch(signIn({ ...response.data }));
+      Cookies.set("token", response.data.token, { expires: 15 });
+      axios.defaults.headers.common[
+        "Authentication"
+      ] = `Bearer ${response.data.token}`;
       navigate(redirect);
       toast.success(`Logged in as ${response.data.name}`);
     } catch (err) {

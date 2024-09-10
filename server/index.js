@@ -8,26 +8,27 @@ import cookieParser from "cookie-parser";
 import orderRoute from "./route/orderRoute.js";
 import adminRoute from "./route/adminRoute.js";
 import cors from "cors";
+import CustomError from "./middleware/CustomError.js";
 const app = express();
+app.use(cookieParser());
 const corsOptions = {
-  origin:
-    process.env.NODE_ENVIRONMENT === "development" ? "*" : process.env.CLIENT,
+  origin: process.env.CLIENT,
   credentials: true,
-  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
-
 connectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 
 //Routes
 app.use("/api/products", productRoute);
 app.use("/api/users", userRoute);
 app.use("/api/orders", orderRoute);
 app.use("/api/admin", adminRoute);
+app.use("*", (req, res, next) => {
+  return next(new CustomError("This route does not exist", 404));
+});
 app.use(errorMiddleware);
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Server is listening on port ${process.env.PORT || 3000}`);

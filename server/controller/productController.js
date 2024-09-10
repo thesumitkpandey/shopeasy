@@ -6,6 +6,7 @@ const getProducts = asyncHandler(async (req, res, next) => {
   if (!allProducts) {
     return next(new CustomError("Please try again later", 404));
   }
+  res.cookie("message", "Hello world");
   res.status(200).json(allProducts);
 });
 const getProductsById = asyncHandler(async (req, res, next) => {

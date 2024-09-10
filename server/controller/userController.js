@@ -23,7 +23,7 @@ const authUser = asyncHandler(async (req, res, next) => {
   if (!isValidPassword) {
     return next(new CustomError("Invalid password", 400));
   }
-  const jwtToken = jwt.sign(
+  const jwtToken = await jwt.sign(
     { _id: correctUserData._id },
     process.env.JWT_SECRET_KEY,
     {
@@ -31,18 +31,13 @@ const authUser = asyncHandler(async (req, res, next) => {
     }
   );
 
-  res.cookie("token", jwtToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENVIRONMENT == "development" ? false : true,
-    maxAge: 15 * 24 * 60 * 60 * 1000,
-    sameSite: "Strict",
-  });
   res.status(200).json({
     id: correctUserData.id,
     name: correctUserData.name,
     email: correctUserData.email,
     isAdmin: correctUserData.isAdmin,
     phone: correctUserData.phone,
+    token: jwtToken,
   });
 });
 const register = asyncHandler(async (req, res, next) => {
@@ -66,7 +61,7 @@ const register = asyncHandler(async (req, res, next) => {
 const logout = asyncHandler((req, res, next) => {
   res.cookie("token", "", {
     httpOnly: true,
-    secure: process.env.NODE_ENVIRONMENT == "development" ? false : true,
+    secure: process.env.NODE_ENVIRONMENT === "production",
     maxAge: 15 * 24 * 60 * 60 * 1000,
     sameSite: "none",
   });

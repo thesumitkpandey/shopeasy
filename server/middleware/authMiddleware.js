@@ -3,13 +3,12 @@ import CustomError from "./CustomError.js";
 import users from "../model/userModel.js";
 import jwt from "jsonwebtoken";
 const protect = asyncHandler(async (req, res, next) => {
-  const token = req.cookies.token;
-  console.log(req.cookies);
+  const token = req.headers.authentication.split(" ")[1];
+
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
       req.loggedInUser = await users.findById(decoded._id);
-      console.log(req.loggedInUser);
       next();
     } catch (err) {
       console.log(err);
