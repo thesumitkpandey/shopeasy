@@ -48,9 +48,7 @@ export default function Signin() {
 
       dispatch(signIn({ ...response.data }));
       Cookies.set("token", response.data.token, { expires: 15 });
-      axios.defaults.headers.common[
-        "Authentication"
-      ] = `Bearer ${response.data.token}`;
+
       navigate(redirect);
       toast.success(`Logged in as ${response.data.name}`);
     } catch (err) {

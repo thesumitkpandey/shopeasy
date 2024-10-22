@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { signOut } from "../../redux/authSlice";
 import { useDispatch } from "react-redux";
-
+import Cookies from "js-cookie";
 export default function TopNav({ setNavbarOpen, navbarOpen }) {
   const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
@@ -20,6 +20,7 @@ export default function TopNav({ setNavbarOpen, navbarOpen }) {
     setDropdownOpen(!dropdownOpen);
   }
   function signOutController() {
+    Cookies.remove("token");
     dispatch(signOut());
     navigate("/");
   }
