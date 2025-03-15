@@ -6,6 +6,7 @@ import products from "../model/productModel.js";
 import users from "../model/userModel.js";
 
 //ORDERS
+
 const getAllOrders = asyncHandler(async (req, res, next) => {
   const allOrders = await orders.find({});
   if (!allOrders) {
