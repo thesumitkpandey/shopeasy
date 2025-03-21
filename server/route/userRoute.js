@@ -2,17 +2,20 @@ import express from "express";
 const router = express.Router();
 import {
   authUser,
-  logout,
+  signout,
   register,
   updateProfile,
   deleteAccount,
+  checkAuth,
 } from "../controller/userController.js";
 import { protect, adminProtect } from "../middleware/authMiddleware.js";
+
 router
-  .route("/")
+  .route("/auth")
+  .get(protect, checkAuth)
   .post(authUser)
   .put(protect, updateProfile)
   .delete(protect, deleteAccount);
 router.post("/signup", register);
-router.get("/logout", logout);
+router.get("/logout", signout);
 export default router;

@@ -5,11 +5,7 @@ const reveiwSchema = new mongoose.Schema({
     required: true,
     ref: "users",
   },
-  rating: {
-    type: Number,
-    required: true,
-    default: true,
-  },
+
   comment: {
     type: String,
     required: true,
@@ -25,18 +21,19 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    image: {
-      type: String,
+    seller: {
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
+      ref: "users",
     },
-    brand: {
+    image: {
       type: String,
       required: true,
     },
     category: {
       type: String,
       required: true,
-      enum: ["Men", "Women", "Kids", "Electronics", "Furniture", "Grocery"],
+      enum: ["Fashion", "Electronics", "Grocery", "Furniture", "Fitness"],
     },
     description: {
       type: String,
@@ -48,7 +45,7 @@ const productSchema = new mongoose.Schema(
       default: 0,
     },
     reviews: [reveiwSchema],
-    reviewCounts: {
+    ratingsCounter: {
       type: Number,
       required: true,
       default: 0,

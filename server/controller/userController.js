@@ -3,6 +3,25 @@ import CustomError from "../middleware/CustomError.js";
 import users from "../model/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+const checkAuth = asyncHandler(async (req, res, next) => {
+  console.log(req.loggedInUser);
+  try {
+    res.status(200).json({
+      success: true,
+      message: `Signed In as ${req.loggedInUser.name}`,
+      userInfo: {
+        id: req.loggedInUser._id,
+        name: req.loggedInUser.name,
+        email: req.loggedInUser.email,
+        phone: req.loggedInUser.phone,
+        role: req.loggedInUser.role,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    return next(new CustomError("internal server error", 500));
+  }
+});
 const authUser = asyncHandler(async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -32,20 +51,26 @@ const authUser = asyncHandler(async (req, res, next) => {
   );
 
   res.status(200).json({
-    id: correctUserData.id,
-    name: correctUserData.name,
-    email: correctUserData.email,
-    isAdmin: correctUserData.isAdmin,
-    phone: correctUserData.phone,
+    success: true,
+    message: "Login Successful",
     token: jwtToken,
+    userInfo: {
+      id: correctUserData.id,
+      name: correctUserData.name,
+      email: correctUserData.email,
+      role: correctUserData.role,
+      phone: correctUserData.phone,
+    },
   });
 });
 const register = asyncHandler(async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, phone } = req.body;
   if (!name || !email || !password) {
     return next(new CustomError("All fields are mandatory", 400));
   }
-  const isExisting = await users.findOne({ email });
+  const isExisting = await users.findOne({
+    $or: [{ email }, { phone }],
+  });
   if (isExisting) {
     return next(new CustomError("User already exists", 401));
   }
@@ -53,12 +78,14 @@ const register = asyncHandler(async (req, res, next) => {
     name,
     email,
     password,
+    phone,
   });
   res.status(201).json({
     success: true,
+    message: "Signup successful, Signin to continue",
   });
 });
-const logout = asyncHandler((req, res, next) => {
+const signout = asyncHandler((req, res, next) => {
   res.cookie("token", "", {
     httpOnly: true,
     secure: process.env.NODE_ENVIRONMENT === "production",
@@ -67,6 +94,7 @@ const logout = asyncHandler((req, res, next) => {
   });
   res.status(200).json({
     success: true,
+    message: "Signout successful",
   });
 });
 
@@ -99,7 +127,8 @@ const deleteAccount = asyncHandler(async (req, res, next) => {
   let user = await users.findByIdAndUpdate(req.user.id, { active: false });
   res.status(200).json({
     success: true,
+    message: "Account deleted successfully",
   });
 });
 
-export { authUser, logout, register, updateProfile, deleteAccount };
+export { authUser, signout, register, updateProfile, deleteAccount, checkAuth };

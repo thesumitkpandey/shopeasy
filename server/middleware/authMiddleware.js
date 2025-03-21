@@ -3,11 +3,18 @@ import CustomError from "./CustomError.js";
 import users from "../model/userModel.js";
 import jwt from "jsonwebtoken";
 const protect = asyncHandler(async (req, res, next) => {
-  const token = req.headers.authentication.split(" ")[1];
-
+  const token = req.headers.authorization
+    ? req.headers.authorization.split(" ")[1]
+    : "";
+  if (!token) {
+    return next(new CustomError("No token Found", 404));
+  }
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      if (!decoded) {
+        return next(new CustomError("Invalid token", 404));
+      }
       req.loggedInUser = await users.findById(decoded._id);
       next();
     } catch (err) {
@@ -19,7 +26,7 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 });
 const adminProtect = asyncHandler(async (req, res, next) => {
-  const token = req.cookies.token;
+  const token = req.headers.token ? req.headers.token.split[1] : "";
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);

@@ -16,15 +16,20 @@ const userSchema = new mongoose.Schema(
       type: Number,
       maxLength: 10,
       minLength: 10,
+      unique: true,
     },
     password: {
       type: String,
       required: true,
     },
-    isAdmin: {
-      type: Boolean,
-      required: true,
-      default: false,
+    wishlist: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "products",
+    },
+    role: {
+      type: String,
+      enum: ["User", "Seller", "Admin"],
+      default: "User",
     },
     active: {
       type: Boolean,
