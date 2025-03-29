@@ -10,6 +10,9 @@ import toast, { Toaster } from "react-hot-toast";
 import axiosInstance from "./utils/axios";
 import Loader from "./components/Loader";
 import Error from "./pages/Error";
+import Products from "./pages/Products";
+
+import ProductDescription from "./pages/ProductDescription";
 export default function App() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -45,6 +48,8 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/products" element={<Products />} />
+          <Route path=":id" element={<ProductDescription />} />
           <Route path="*" element={<Error />} />
         </Route>
       </Routes>

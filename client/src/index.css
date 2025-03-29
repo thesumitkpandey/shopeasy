@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @theme {
   --font-poppins: "Poppins", "sans-serif";
-  --color-charcoal: #101820;
-  --color-yellow: #fee715;
+  --color-charcoal: oklch(0.223 0.016 262.1);
+  --color-charcoalhover: oklch(0.18 0.016 262.1);
+  --color-yellow: oklch(0.795 0.184 86.047);
+  --color-yellowhover: oklch(0.681 0.162 75.834);
 }

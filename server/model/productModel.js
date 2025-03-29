@@ -1,18 +1,18 @@
 import mongoose from "mongoose";
-const reveiwSchema = new mongoose.Schema({
-  users: {
+const reviewSchema = new mongoose.Schema({
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "users",
   },
-
   comment: {
     type: String,
     required: true,
   },
-  name: {
-    type: String,
+  userRating: {
+    type: Number,
     required: true,
+    default: 0,
   },
 });
 const productSchema = new mongoose.Schema(
@@ -39,12 +39,12 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    ratings: {
+    finalRating: {
       type: Number,
       required: true,
       default: 0,
     },
-    reviews: [reveiwSchema],
+    reviews: [reviewSchema],
     ratingsCounter: {
       type: Number,
       required: true,

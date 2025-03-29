@@ -7,6 +7,7 @@ import {
   updateProfile,
   deleteAccount,
   checkAuth,
+  googleAuthController,
 } from "../controller/userController.js";
 import { protect, adminProtect } from "../middleware/authMiddleware.js";
 
@@ -16,6 +17,7 @@ router
   .post(authUser)
   .put(protect, updateProfile)
   .delete(protect, deleteAccount);
-router.post("/signup", register);
-router.get("/logout", signout);
+router.post("/auth/signup", register);
+router.get("/auth/logout", signout);
+router.post("/auth/googleauth", googleAuthController);
 export default router;

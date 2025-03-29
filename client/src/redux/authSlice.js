@@ -34,7 +34,16 @@ const authSlice = createSlice({
         console.log(err);
       }
     },
-    signOut: (state, action) => {},
+    signOut: (state, action) => {
+      try {
+        localStorage.removeItem("token");
+        state.isAuthenticated = false;
+        state.userInfo = {};
+      } catch (err) {
+        toast.error(err.message);
+        console.log(err);
+      }
+    },
   },
 });
 export const { checkAuth, signIn, signOut } = authSlice.actions;

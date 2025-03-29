@@ -1,19 +1,21 @@
 import React, { useState } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import CartIcon from "../../assets/cart.svg";
 import UserIcon from "../../assets/profile.svg";
 import MenuIcon from "../../assets/hamburger.svg";
 import SearchIcon from "../../assets/search.svg";
 import Logo from "../../assets/logo.png";
 import HeartIcon from "../../assets/heart.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { signOut } from "../../redux/authSlice";
 import ProfileDropdown from "./ProfileDropdown";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for profile dropdown
-  const { isAuthenticated } = useSelector((state) => state.auth);
-
+  const { isAuthenticated, userInfo } = useSelector((state) => state.auth);
+  const [searchParams] = useSearchParams();
+  const dispatch = useDispatch();
   const categories = [
     "Fashion",
     "Electronics",
@@ -36,19 +38,23 @@ export default function Navbar() {
 
           {/* Desktop Categories */}
           <div className="hidden md:flex gap-6">
-            {categories.map((category, index) => (
-              <NavLink
-                key={index}
-                to={`/${category.toLowerCase()}`}
-                className={({ isActive }) =>
-                  isActive
-                    ? "text-charcoal font-bold "
-                    : "relative text-charcoal after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[3px] after:bg-charcoal after:transition-all after:duration-300 hover:after:w-full"
-                }
-              >
-                {category}
-              </NavLink>
-            ))}
+            {categories.map((category, index) => {
+              const isActive = searchParams.get("category") === category;
+
+              return (
+                <Link
+                  key={index}
+                  to={`/products?category=${category}`}
+                  className={`relative text-charcoal transition-all duration-300 ${
+                    isActive
+                      ? "font-bold border-b-2 border-charcoal"
+                      : "after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[3px] after:bg-charcoal after:transition-all after:duration-300 hover:after:w-full"
+                  }`}
+                >
+                  {category}
+                </Link>
+              );
+            })}
           </div>
         </div>
 
@@ -86,7 +92,7 @@ export default function Navbar() {
               {/* Profile Icon with Dropdown */}
               <div className="relative">
                 <img
-                  src={UserIcon}
+                  src={userInfo.photo}
                   alt="User"
                   className="w-9 h-9 rounded-full border-2 border-charcoal cursor-pointer transition-transform duration-300 hover:scale-130 hover:opacity-80"
                   onClick={toggleDropdown}
@@ -121,15 +127,21 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden bg-white shadow-md py-3">
           <div className="space-y-2 text-center">
-            {categories.map((category, index) => (
-              <NavLink
-                key={index}
-                to={`/${category.toLowerCase()}`}
-                className="block text-charcoal hover:opacity-80"
-              >
-                {category}
-              </NavLink>
-            ))}
+            {categories.map((category, index) => {
+              const isActive = searchParams.get("category") === category;
+
+              return (
+                <Link
+                  key={index}
+                  to={`/products?category=${category}`}
+                  className={`block text-charcoal py-1 transition-all duration-300 ${
+                    isActive ? "font-bold border-b-2 border-charcoal" : ""
+                  }`}
+                >
+                  {category}
+                </Link>
+              );
+            })}
           </div>
         </div>
       )}

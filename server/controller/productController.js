@@ -2,19 +2,70 @@ import asyncHandler from "../middleware/asyncHandler.js";
 import CustomError from "../middleware/CustomError.js";
 import products from "../model/productModel.js";
 const getProducts = asyncHandler(async (req, res, next) => {
-  console.log(req.query);
-  const allProducts = await products.find({});
-  if (!allProducts) {
-    return next(new CustomError("Please try again later", 404));
+  //Product filtering feature
+  const filteringQuery = {};
+  if (req.query.search) {
+    filteringQuery.$or = [
+      { name: { $regex: req.query.search, $options: "i" } },
+      { description: { $regex: req.query.search, $options: "i" } },
+    ];
+  }
+  if (req.query.category) {
+    filteringQuery.category =
+      req.query.category[0].toUpperCase() + req.query.category.slice(1);
+  }
+  if (req.query.inStock) {
+    filteringQuery.inStock = { $gt: 0 };
+  }
+  if (req.query.minPrice || req.query.maxPrice) {
+    filteringQuery.price = {};
+    if (req.query.minPrice)
+      filteringQuery.price.$gte = Number(req.query.minPrice);
+    if (req.query.maxPrice)
+      filteringQuery.price.$lte = Number(req.query.maxPrice);
+  }
+  if (req.query.ratings) {
+    filteringQuery.ratings = { $gte: Number(req.query.ratings) };
   }
 
-  res.status(200).json(allProducts);
+  //Products Sorting feature
+  const sortingQuery = {};
+  if (req.query.sortByPrice) {
+    sortingQuery.price = req.query.sortByPrice === "asc" ? 1 : -1;
+  }
+  if (req.query.sortByRating) {
+    sortingQuery.ratings = -1;
+  }
+
+  //Product pagination feature
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+  const allProducts = await products
+    .find(filteringQuery)
+    .sort(sortingQuery)
+    .skip(skip)
+    .limit(limit);
+
+  res.status(200).json({
+    success: true,
+    page: page,
+    productsList: allProducts,
+  });
 });
 
 const getProductsById = asyncHandler(async (req, res, next) => {
-  const product = await products.findById(req.params.id);
+  const product = await products
+    .findById(req.params.id)
+    .populate("reviews.user", "name photo");
+
+  console.log(product);
   if (product) {
-    res.status(200).json(product);
+    res.status(200).json({
+      success: true,
+      message: `ProductId ${product._id} fetched`,
+      product: product,
+    });
   } else {
     return next(new CustomError("Product with this id does not exist", 404));
   }

@@ -42,7 +42,7 @@ const authUser = asyncHandler(async (req, res, next) => {
   if (!isValidPassword) {
     return next(new CustomError("Invalid password", 400));
   }
-  const jwtToken = await jwt.sign(
+  const jwtToken = jwt.sign(
     { _id: correctUserData._id },
     process.env.JWT_SECRET_KEY,
     {
@@ -131,4 +131,41 @@ const deleteAccount = asyncHandler(async (req, res, next) => {
   });
 });
 
-export { authUser, signout, register, updateProfile, deleteAccount, checkAuth };
+const googleAuthController = asyncHandler(async (req, res, next) => {
+  const { name, email, phone } = req.body;
+  let userDetails;
+  userDetails = await users.findOne({ email });
+
+  if (!userDetails) {
+    const userDetails = await users.create({ name, email, phone });
+  }
+  const jwtToken = jwt.sign(
+    { _id: userDetails._id },
+    process.env.JWT_SECRET_KEY,
+    {
+      expiresIn: "15d",
+    }
+  );
+  res.status(200).json({
+    success: true,
+    message: "Signed In with Google",
+    token: jwtToken,
+    userInfo: {
+      id: userDetails._id,
+      name: userDetails.name,
+      email: userDetails.email,
+      phone: userDetails.phone,
+      role: userDetails.role,
+    },
+  });
+});
+
+export {
+  authUser,
+  signout,
+  register,
+  updateProfile,
+  deleteAccount,
+  checkAuth,
+  googleAuthController,
+};
