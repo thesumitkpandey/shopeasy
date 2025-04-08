@@ -6,6 +6,7 @@ import {
   FaEnvelope,
   FaLock,
 } from "react-icons/fa";
+import Loader from "../components/Loader";
 import { toast } from "react-hot-toast";
 import axiosInstance from "../utils/axios";
 import { useDispatch, useSelector } from "react-redux";

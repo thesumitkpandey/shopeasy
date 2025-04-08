@@ -34,6 +34,10 @@ const authSlice = createSlice({
         console.log(err);
       }
     },
+    addToWishlist: (state, action) => {
+      try {
+      } catch (err) {}
+    },
     signOut: (state, action) => {
       try {
         localStorage.removeItem("token");
@@ -46,5 +50,5 @@ const authSlice = createSlice({
     },
   },
 });
-export const { checkAuth, signIn, signOut } = authSlice.actions;
+export const { checkAuth, signIn, signOut, addToWishlist } = authSlice.actions;
 export default authSlice.reducer;

@@ -26,10 +26,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
     },
-    wishlist: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "products",
-    },
+    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "products" }],
     role: {
       type: String,
       enum: ["User", "Seller", "Admin"],

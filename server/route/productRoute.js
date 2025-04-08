@@ -10,4 +10,5 @@ const router = express.Router();
 router.get("/", getProducts);
 router.get("/:id", getProductsById);
 router.post("/:id/reviews", protect, addProductReview);
+
 export default router;

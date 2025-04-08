@@ -6,8 +6,9 @@ import {
   register,
   updateProfile,
   deleteAccount,
-  checkAuth,
   googleAuthController,
+  productWishlist,
+  checkAuth,
 } from "../controller/userController.js";
 import { protect, adminProtect } from "../middleware/authMiddleware.js";
 
@@ -20,4 +21,5 @@ router
 router.post("/auth/signup", register);
 router.get("/auth/logout", signout);
 router.post("/auth/googleauth", googleAuthController);
+router.put("/wishlist", protect, productWishlist);
 export default router;

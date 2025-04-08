@@ -25,7 +25,7 @@ const getProducts = asyncHandler(async (req, res, next) => {
       filteringQuery.price.$lte = Number(req.query.maxPrice);
   }
   if (req.query.ratings) {
-    filteringQuery.ratings = { $gte: Number(req.query.ratings) };
+    filteringQuery.finalRating = { $gte: Number(req.query.ratings) };
   }
 
   //Products Sorting feature

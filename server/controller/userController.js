@@ -15,6 +15,8 @@ const checkAuth = asyncHandler(async (req, res, next) => {
         email: req.loggedInUser.email,
         phone: req.loggedInUser.phone,
         role: req.loggedInUser.role,
+        photo: req.loggedInUser.photo,
+        wishlist: req.loggedInUser.wishlist,
       },
     });
   } catch (err) {
@@ -60,6 +62,8 @@ const authUser = asyncHandler(async (req, res, next) => {
       email: correctUserData.email,
       role: correctUserData.role,
       phone: correctUserData.phone,
+      photo: correctUserData.photo,
+      wishlist: correctUserData.wishlist,
     },
   });
 });
@@ -159,7 +163,30 @@ const googleAuthController = asyncHandler(async (req, res, next) => {
     },
   });
 });
+const productWishlist = asyncHandler(async (req, res, next) => {
+  const { productId } = req.body;
 
+  if (!productId) {
+    return next(new CustomError("No product id mentioned", 404));
+  }
+
+  const productIndex = req.loggedInUser.wishlist.indexOf(productId);
+  if (productIndex == -1) {
+    req.loggedInUser.wishlist.push(productId);
+  } else {
+    req.loggedInUser.wishlist.splice(productIndex, 1);
+  }
+  const isModified = await req.loggedInUser.save();
+  console.log(isModified);
+  if (isModified) {
+    res.status(201).json({
+      success: true,
+      message: "Successfully Modified",
+    });
+  } else {
+    return next(new CustomError("Error modifying wishlist", 500));
+  }
+});
 export {
   authUser,
   signout,
@@ -168,4 +195,5 @@ export {
   deleteAccount,
   checkAuth,
   googleAuthController,
+  productWishlist,
 };

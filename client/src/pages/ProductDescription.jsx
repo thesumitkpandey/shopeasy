@@ -7,7 +7,7 @@ import Loader from "../components/Loader";
 import Ratings from "../components/products/Ratings";
 import { CiShop } from "react-icons/ci";
 import { FaTags, FaDollarSign, FaUndo } from "react-icons/fa";
-
+import Wishlist from "../components/products/Wishlist";
 const ProductDescription = () => {
   const [productDetails, setProductDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -48,6 +48,7 @@ const ProductDescription = () => {
             alt={productDetails.name || "Product"}
             className="w-full h-[350px] object-contain rounded-lg"
           />
+          <Wishlist id={id} />
           <div className="flex mt-4 text-white font-bold">
             <button className="w-1/2 bg-yellow hover:bg-yellowhover transition-all p-4 rounded-l flex justify-center gap-2 items-center">
               <IoBagCheckSharp /> Buy Now
