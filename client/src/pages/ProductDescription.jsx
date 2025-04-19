@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { FaHeart, FaStar, FaShoppingCart } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import { IoBagCheckSharp } from "react-icons/io5";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../utils/axios";
@@ -7,17 +7,20 @@ import Loader from "../components/Loader";
 import Ratings from "../components/products/Ratings";
 import { CiShop } from "react-icons/ci";
 import { FaTags, FaDollarSign, FaUndo } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import Wishlist from "../components/products/Wishlist";
+
 const ProductDescription = () => {
   const [productDetails, setProductDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const userInfo = useSelector((state) => state.auth.userInfo);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
         const response = await axiosInstance(`/api/products/${id}`);
-        console.log(response);
         setProductDetails(response.data.product);
       } catch (error) {
         console.error("Error fetching product details:", error);
@@ -48,7 +51,7 @@ const ProductDescription = () => {
             alt={productDetails.name || "Product"}
             className="w-full h-[350px] object-contain rounded-lg"
           />
-          <Wishlist id={id} />
+          {isAuthenticated && <Wishlist id={id} />}
           <div className="flex mt-4 text-white font-bold">
             <button className="w-1/2 bg-yellow hover:bg-yellowhover transition-all p-4 rounded-l flex justify-center gap-2 items-center">
               <IoBagCheckSharp /> Buy Now
@@ -71,7 +74,7 @@ const ProductDescription = () => {
                 productDetails.inStock > 0 ? "bg-green-800" : "bg-red-600"
               }  rounded-md`}
             >
-              {productDetails.inStock == 0
+              {productDetails.inStock === 0
                 ? "Out of Stock"
                 : `In Stock - ${productDetails.inStock}`}
             </span>
@@ -88,7 +91,7 @@ const ProductDescription = () => {
             </div>
           </div>
 
-          <div className=" ">
+          <div>
             <p>{productDetails.description}</p>
           </div>
           <div className="p-4 border rounded-lg shadow-md bg-white w-fit flex justify-center text-center items-center">
@@ -97,7 +100,7 @@ const ProductDescription = () => {
             </h2>
             <p className="text-gray-700">Seller name</p>
           </div>
-          <div className=" ">
+          <div>
             <h2 className="text-xl font-semibold  mb-4">Customer Reviews</h2>
             {productDetails.reviews.length > 0 ? (
               productDetails.reviews.map((review, index) => (

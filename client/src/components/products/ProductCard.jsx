@@ -5,7 +5,7 @@ import Ratings from "./Ratings";
 const ProductCard = ({ product }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-      <Link to={`/${product._id}`}>
+      <Link to={`/products/${product._id}`}>
         <div className="relative pb-[100%] overflow-hidden">
           <img
             src={product.image || "/placeholder-product.jpg"}

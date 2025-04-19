@@ -1,1 +1,1 @@
-wishlist completed in backend completel it in front end
+product wishlist function is completely working
